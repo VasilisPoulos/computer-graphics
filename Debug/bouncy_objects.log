@@ -1,0 +1,6 @@
+﻿  MainWindow.cpp
+C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\src\MainWindow.cpp(139,16): warning C4101: 'projLoc': unreferenced local variable
+C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\src\MainWindow.cpp(141,43): warning C4101: 'rMat': unreferenced local variable
+C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\src\MainWindow.cpp(139,9): warning C4101: 'mvLoc': unreferenced local variable
+C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\src\MainWindow.cpp(141,37): warning C4101: 'tMat': unreferenced local variable
+  bouncy_objects.vcxproj -> C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\Debug\bouncy_objects.exe
