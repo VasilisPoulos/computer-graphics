@@ -1,8 +1,6 @@
 # Computer graphics project
 First OpenGL programming exercice for the course Computer Graphics and Interactive Systems at the University of Ioannina.
 
-![Suzi](examples/obj_import_test/obj_example.gif)
-
 # Todo list
 
 ## Main tasks
@@ -27,3 +25,5 @@ First OpenGL programming exercice for the course Computer Graphics and Interacti
 * Task 5
   * - [x] Texture on sphere
   * - [x] Toggle texture (T button)
+
+![Suzi](examples/obj_import_test/obj_example.gif)
