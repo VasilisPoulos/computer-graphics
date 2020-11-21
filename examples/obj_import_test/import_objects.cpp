@@ -15,6 +15,7 @@ const unsigned int SCR_HEIGHT = 576;
 int move_on_x = 0;
 int move_on_y = 0;
 int move_on_z = 3;
+bool texture = true;
 
 glm::mat4 MVP;
 
@@ -178,9 +179,9 @@ int main()
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec2> uvs;
     std::vector<glm::vec3> normals; // Won't be used at the moment.
-    bool res = loadOBJ("subdiv.obj", vertices, uvs, normals);
+    bool res = loadOBJ("suzi.obj", vertices, uvs, normals);
     if (res == true) {
-        std::cout << "e naiiii";
+        std::cout << "Loaded .obj \n";
     }
     
     glEnable(GL_DEPTH_TEST);
@@ -211,14 +212,26 @@ int main()
 
     //unsigned int texture1 = loadTexture();
     //glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
-
+    unsigned int texture1 = loadTexture();
+    glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
     while (!glfwWindowShouldClose(window))
     {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- 
-        glfwSetKeyCallback(window, key_callback);
 
+        glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        if (texture)
+        {   
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture1);
+        }
+        else
+        {
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        glfwSetKeyCallback(window, key_callback);
+        Model = glm::rotate(Model, glm::radians(0.05f), glm::vec3(0.0f, 1.0f, 0.0f));
+        MVP = Projection * View * Model;
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
         // Shaders.use and draw
         glUseProgram(shaderProgram);
@@ -386,7 +399,7 @@ unsigned int loadTexture() {
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("texture.jpg", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -431,6 +444,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     {
         move_on_z -= 1;
         moveCamera(move_on_x, move_on_y, move_on_z);
+    }
+    else if (key == GLFW_KEY_T && action == GLFW_PRESS)
+    {
+        texture = !texture;
+        std::cout << "texture " << texture << "\n";
+        if (!texture) {
+            std::cout << "binded to default texture \n";
+        }
     }
 }
 
