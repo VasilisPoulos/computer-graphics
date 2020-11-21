@@ -1,2 +1,0 @@
-C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\Debug\bouncy_objects.exe
-C:\Users\bill2\Documents\Visual Studio 2019\Projects\bouncy_objects\Debug\bouncy_objects.pdb
