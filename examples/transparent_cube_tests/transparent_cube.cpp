@@ -139,19 +139,6 @@ int main()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // Second Object
-
-    glGenBuffers(2, &VBO_2);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     //  camera
