@@ -84,6 +84,9 @@ int main()
     icos.loadTexture("jpg/earth.jpg");
     ball.bindVBO();
     suzi.bindVBO();
+    Object subd(TYPE_CUBE);
+    subd.bindVBO();
+    subd.loadTexture("jpg/container.jpg");
 
     glEnable(GL_DEPTH_TEST);
     //  camera
@@ -94,7 +97,7 @@ int main()
         glm::vec3(0, 0, 0), // and looks at the origin
         glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
     );
-    suzi.modelMatrix = glm::translate(ball.modelMatrix, glm::vec3(-3.0f, 0.0f, 0.0f));
+    //suzi.modelMatrix = glm::translate(ball.modelMatrix, glm::vec3(-3.0f, 0.0f, 0.0f));
     ball.modelMatrix = glm::translate(ball.modelMatrix, glm::vec3(3.0f, 0.0f, 0.0f));
     icos.modelMatrix = glm::translate(ball.modelMatrix, glm::vec3(0.0f, 3.0f, 0.0f));
     suzi.loadTexture("jpg/magma.jpg");
@@ -121,7 +124,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, 0);
         suzi.unbindVAO();
 
-        ball.bindVAO();
+      /*  ball.bindVAO();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ball.texture);
         MVP = Projection * View * ball.modelMatrix;
@@ -137,7 +140,16 @@ int main()
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, icos.m_vertices.size());
         glBindTexture(GL_TEXTURE_2D, 0);
-        icos.unbindVAO();
+        icos.unbindVAO();*/
+
+       /* subd.bindVAO();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, subd.texture);
+        MVP = Projection * View * subd.modelMatrix;
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, subd.m_vertices.size());
+        glBindTexture(GL_TEXTURE_2D, 0);
+        subd.unbindVAO();*/
 
         glfwSwapBuffers(window);
         glfwPollEvents();

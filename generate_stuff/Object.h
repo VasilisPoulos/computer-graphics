@@ -9,6 +9,7 @@
 const int TYPE_SUZI = 0;
 const int TYPE_BALL = 1;
 const int TYPE_ICOS = 2;
+const int TYPE_CUBE = 3;
 
 class Object
 {

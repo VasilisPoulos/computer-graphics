@@ -23,7 +23,14 @@ Object::Object(int objectId)
     {
         if (!loadOBJ("objectFiles/icosphere_simple.obj"))
         {
-            throw("Loading BALL failed");
+            throw("Loading ICOS failed");
+        }
+    }
+    else if (objectId == TYPE_CUBE)
+    {
+        if (!loadOBJ("objectFiles/cube.obj"))
+        {
+            throw("Loading CUBE failed");
         }
     }
     bindVBO();
