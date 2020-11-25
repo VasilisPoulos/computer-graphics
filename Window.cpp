@@ -1,97 +1,108 @@
 ﻿#include "Window.h"
 
+#include "Window.h"
+
 Window::Window()
 {
-	// Initialise GLFW
-	if (!glfwInit()) throw "Failed to initialize GLFW.";
+	if (!glfwInit()) throw "GLFW library load failed...";
 
-	// Set Hints
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR_VERSION);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR_VERSION);
+	setHints();
+
+	if (!createWindow()) throw "Failed to create GLFW window";
+
+	glfwSetFramebufferSizeCallback(m_displayWindow, framebuffer_size_callback);
+	glfwSetKeyCallback(m_displayWindow, processInput);
+
+	setOGL();
+}
+
+bool Window::createWindow() {
+	m_displayWindow = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Untitled Window", NULL, NULL);
+	if (!m_displayWindow)
+		return false;
+	glfwSetWindowTitle(m_displayWindow, u8"Συγκρουόμενα");
+
+	glfwMakeContextCurrent(m_displayWindow);
+	return true;
+}
+
+void Window::clearScreen() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Window::setHints() {
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-
-	// Open a window and create its OpenGL context
-	m_Window = glfwCreateWindow(WIDTH, HEIGHT, "Untitled Window", NULL, NULL);
-	if (!m_Window) throw "Failed to open GLFW window.";
-	glfwSetWindowTitle(m_Window, u8"Συγκρουόμενα");
-	glfwMakeContextCurrent(m_Window);
-
-	// Initialize GLEW
-	if (glewInit() != GLEW_OK) throw "Failed to initialize GLEW.";
-
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
-
-	// Black background (never go back to other backgrounds)
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-}
-
-void Window::draw() {
-	// Create the Vertex Array Object before linking
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	GLfloat vertices[]{
-		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
-		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
-	};
-	VertexBuffer vbo(vertices, sizeof(vertices), GL_STATIC_DRAW);
-
-	GLuint elements[]{
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-
-	ShaderProgram shader("./res/shaders/Basic.shader");
-
-	// Set position attribute layout
-	GLCall(GLint posAttrib = glGetAttribLocation(shader.getID(), "position"));
-	GLCall(glEnableVertexAttribArray(posAttrib));
-	GLCall(glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0));
-
-	// Set color attribute layout
-	GLCall(GLint colAttrib = glGetAttribLocation(shader.getID(), "color"));
-	GLCall(glEnableVertexAttribArray(colAttrib));
-	GLCall(glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float))));
-	
-	/* Loop until the user closes the window */
-	do 
-	{		
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-		/* Swap front and back buffers */
-		glfwSwapBuffers(m_Window);
-
-		/* Poll for and process events */
-		glfwPollEvents();
-
-	} while (!glfwWindowShouldClose(m_Window));
-}
-
-void Window::catchKey() {
-	if (glfwGetKey(m_Window, GLFW_KEY_A) == GLFW_PRESS) {
-		std::cout << "Pressed key A" << std::endl;
-	}
-
-	if (glfwGetKey(m_Window, GLFW_KEY_B)) {
-		std::cout << "Pressed key B" << std::endl;
-	}
 }
 
 Window::~Window()
 {
+	glfwDestroyWindow(m_displayWindow);
 	glfwTerminate();
 }
 
+void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
+void Window::processInput(GLFWwindow* window, int key, int code, int action, int mode) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
+
+	// Camera Controls
+	else if (key == GLFW_KEY_A && action == GLFW_PRESS)
+		printf("Move Camera Left\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_D && action == GLFW_PRESS)
+		printf("Move Camera Right\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
+		printf("Move Camera Down\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_W && action == GLFW_PRESS)
+		printf("Move Camera Up\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_X && action == GLFW_PRESS)
+		printf("Move Camera Back\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_E && action == GLFW_PRESS)
+		printf("Move Camera Front\n"); // This should be moving the ball somehow
+
+	// Sphere Controls
+	else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+		printf("Move Sphere Left\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+		printf("Move Sphere Right\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+		printf("Move Sphere Down\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+		printf("Move Sphere Up\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
+		printf("Move Sphere Front\n"); // This should be moving the ball somehow
+
+	else if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
+		printf("Move Sphere Back\n"); // This should be moving the ball somehow
+}
+
+void Window::setOGL() {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+void Window::display() {
+	while (!glfwWindowShouldClose(m_displayWindow))
+	{
+		clearScreen();
+
+		glfwSwapBuffers(m_displayWindow);
+		glfwPollEvents();
+	}
+}

@@ -1,28 +1,28 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <chrono>
-
-#include "ShaderProgram.h"
-#include "VertexBuffer.h"
-
-#define WIDTH  600
-#define HEIGHT 600
-#define MAJOR_VERSION 3
-#define MINOR_VERSION 3
-
-class Window {
+class Window
+{
 private:
-	GLFWwindow* m_Window;
+	const int WINDOW_WIDTH = 600;
+	const int WINDOW_HEIGHT = 600;
+
+	glm::mat4 projection_matrix;
+	GLFWwindow* m_displayWindow;
+
+	void setHints();
+	bool createWindow();
+	void setOGL();
+	static void processInput(GLFWwindow* window, int key, int code, int action, int mode);
+	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+	void clearScreen();
 public:
 	Window();
 	~Window();
-	void draw();
-private:
-	void catchKey();
+
+	void display();
 };
+
+

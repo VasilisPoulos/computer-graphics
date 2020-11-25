@@ -1,42 +1,37 @@
 #pragma once
-#include "ErrorHandling.h"
+#include <GL/glew.h>
 
 #include <string>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
 
-/* 
- * Since we keep both shaders inside
- * the same source file, we use this
- * struct to save both sources.
- */
 struct ShaderProgramSource
 {
-	std::string vertexShaderSource;
-	std::string fragmentShaderSource;
+	std::string VertexShaderSource;
+	std::string FragmentShaderSource;
 };
 
 class ShaderProgram
 {
-private:
-	std::string m_Filepath;
-	unsigned int m_ShaderProgramID;
-	std::unordered_map<std::string, GLint> m_UniformLocationCache; // This keeps all the used uniforms
 public:
-	ShaderProgram(const std::string& filepath);
+	ShaderProgram();
 	~ShaderProgram();
-	void bind();
-	void unbind();
 
-	void setUniform4f(const std::string& uniform, GLfloat r, GLfloat g, GLfloat b, GLfloat alpha);
+	void bind()	const { glUseProgram(m_ProgramID); }
+	void unbind() const { glUseProgram(0); }
 
-	unsigned int getID();
-
-private:
-	ShaderProgramSource parseShaders(const std::string& filepath);
-	GLuint compileShader(GLuint shaderType, const std::string& shaderSource);
-	unsigned int createShaders(const std::string& vertexShader, const std::string& fragmentShader);
+	void setUniform4f(const std::string& uniform, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+	void setUniform4fv(const std::string& uniform, GLsizei count, GLboolean transpose, const GLfloat* value);
+	GLint getAttribLocation(const GLchar* attribute) { return glGetAttribLocation(m_ProgramID, attribute);}
 	GLint getUniformLocation(const std::string& uniform);
-};
+private:
+	const char* shaderPath = "res/shaders/shader.glsl";
+	GLuint m_ProgramID;
+	std::unordered_map<std::string, GLint> m_UniformLocationCache;
 
+	ShaderProgramSource parseShaders(const std::string& filepath);
+	GLuint createShaders(const std::string& vertexShader, const std::string& fragmentShader);
+	GLuint compileShader(GLuint shaderType, const std::string& shaderSource);
+};
