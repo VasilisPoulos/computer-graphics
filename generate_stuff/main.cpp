@@ -173,51 +173,13 @@ GLFWwindow* Init()
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
-		move_on_y += 1;
-		moveCamera(move_on_x, move_on_y, move_on_z);
-	}
-	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-	{
-		move_on_y -= 1;
-		moveCamera(move_on_x, move_on_y, move_on_z);
-	}
-	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-	{
-		move_on_x -= 1;
-		moveCamera(move_on_x, move_on_y, move_on_z);
-	}
-	else if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-	{
-		move_on_x += 1;
-		moveCamera(move_on_x, move_on_y, move_on_z);
-	}
-	else if (key == GLFW_KEY_PAGE_UP && action == GLFW_PRESS)
-	{
-		move_on_z += 1;
-		moveCamera(move_on_x, move_on_y, move_on_z);
-	}
-	else if (key == GLFW_KEY_PAGE_DOWN && action == GLFW_PRESS)
-	{
-		move_on_z -= 1;
-		moveCamera(move_on_x, move_on_y, move_on_z);
+		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 	else if (key == GLFW_KEY_T && action == GLFW_PRESS)
 	{
 
 		list.front()->switchTexture();
 	}
-}
-
-void moveCamera(int move_x, int move_y, int move_z) {
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	glm::mat4 Model = glm::mat4(1.0f);
-	glm::mat4 View = glm::lookAt(
-		glm::vec3(move_x, move_y, move_z), // Camera is at (4,3,3), in World Space
-		glm::vec3(0, 0, 0), // and looks at the origin
-		glm::vec3(1, 0, 0)  // Head is up (set to 0,-1,0 to look upside-down)
-	);
-	MVP = Projection * View * Model;
-	std::cout << "recorded " << move_x << ":" << move_y << ":" << move_z << "\n";
 }
