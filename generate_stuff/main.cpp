@@ -3,8 +3,8 @@
 #include <list>
 
 // settings
-const unsigned int SCR_WIDTH = 1024;
-const unsigned int SCR_HEIGHT = 576;
+const unsigned int SCR_WIDTH = 600;
+const unsigned int SCR_HEIGHT = 600;
 int move_on_x = 15;
 int move_on_y = 25;
 int move_on_z = 40;
@@ -49,7 +49,7 @@ int main()
 
 	//  Camera
 	GLuint MatrixID = shaderProgram.getUniformLocation("MVP");
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 0.1f, 100.0f);
 	glm::mat4 View = glm::lookAt(
 		glm::vec3(move_on_x, move_on_y, move_on_z), // Camera is at (4,3,3), in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
@@ -179,7 +179,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_T && action == GLFW_PRESS)
 	{
-
 		list.front()->switchTexture();
 	}
 }
