@@ -2,7 +2,7 @@
 
 ShaderProgram::ShaderProgram(): m_ProgramID(0)
 {
-	ShaderProgramSource source = parseShaders("res/shaders/Full.shader"); // Change the path to the wanted shader
+	ShaderProgramSource source = parseShaders(shaderPath); // Change the path to the wanted shader
 	m_ProgramID = createShaders(source.VertexShaderSource, source.FragmentShaderSource);
 	bind();
 }
