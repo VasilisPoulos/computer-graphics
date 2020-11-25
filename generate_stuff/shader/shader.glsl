@@ -6,17 +6,17 @@ in vec2 UV;
 in vec3 color;
                                                           
 // Ouput data                                                          
-out vec3 out_color;                                                        
+out vec4 out_color;                                                        
                                                                        
 // Values that stay constant for the whole mesh.                       
 uniform sampler2D myTextureSampler;                                    
-uniform vec3 textureFlag;
+uniform vec4 textureFlag;
 
 void main() {                                                          
                                                                        
     // Output color = color of the texture at the specified UV  
     // using textureFlag to set a color if there is there is no texture
-    out_color = (textureFlag * texture(myTextureSampler, UV).rgb) + (1.0 - textureFlag) * color;                         
+    out_color = textureFlag * vec4((texture(myTextureSampler, UV).rgb), 1.0f) + (1.0 - textureFlag) * vec4( color, 0.3f);                         
 }
 
 #shader vertex
@@ -40,5 +40,5 @@ void main() {
     // UV of the vertex. No special space for this one.                
     UV = vertexUV;
 
-    color = vec3(1.0f, 0.0f, 0.0f);
+    color = vec3(1.0f, 0.5f, 0.0f);
 }

@@ -31,6 +31,13 @@ int main()
 	cube.modelMatrix =		
 		glm::translate(cube.modelMatrix, glm::vec3(2.0f, 0.0f, 0.0f));
 
+	// Loading cube
+	Object cube_2(TYPE_CUBE);
+	cube_2.bindVBO();         //bind cube's data to a vbo
+	//
+	cube_2.modelMatrix =
+		glm::translate(cube_2.modelMatrix, glm::vec3(2.0f, 0.0f, -3.0f));
+
 	// Loading shpere
 	Object ball(TYPE_BALL);
 	list.push_back(&ball);
@@ -38,7 +45,8 @@ int main()
 	ball.loadTexture("jpg/normal.jpg");
 
 	// OGL options
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 
 	//  Camera
@@ -50,9 +58,8 @@ int main()
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 
-	//color enable
+	// Texture enable flag
 	GLuint textureFlag = shaderProgram.getUniformLocation("textureFlag");
-	//glUniform3f(textureFlag, 1.0f, 1.0f, 1.0f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -62,16 +69,24 @@ int main()
 		shaderProgram.bind();
 
 		// Draw cube
-		glUniform3f(textureFlag, 0.0f, 0.0f, 0.0f);
+		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
 		cube.bindVAO();
 		MVP = Projection * View * cube.modelMatrix;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, cube.m_vertices.size());
 		cube.unbindVAO();
 
+		// Draw cube behind cube to test transparency
+		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
+		cube_2.bindVAO();
+		MVP = Projection * View * cube_2.modelMatrix;
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		glDrawArrays(GL_TRIANGLES, 0, cube_2.m_vertices.size());
+		cube_2.unbindVAO();
+
 		// Draw textured sphere
 		ball.bindVAO();
-		glUniform3f(textureFlag, 1.0f, 1.0f, 1.0f);
+		glUniform4f(textureFlag, 1.0f, 1.0f, 1.0f, 1.0f);
 		// TODO: built this if into a funcition?
 		if (ball.enableTexture)
 		{
