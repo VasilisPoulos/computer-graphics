@@ -13,6 +13,7 @@ std::list<Object*> target; // Target SPH sphere to enable/disable its texture
 std::list<Object> spawnObjects;
 std::list<Object>::iterator it;
 
+
 glm::mat4 MVP;
 
 // Methods Init
@@ -30,7 +31,10 @@ int main()
 	Object cube(TYPE_CUBE);
 	cube.bindVBO();         //bind cube's data to a vbo
 	cube.modelMatrix =
-		glm::scale(cube.modelMatrix, glm::vec3(15.0f, 15.0f, 15.0f));
+		glm::translate(cube.modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
+	cube.modelMatrix =
+		glm::scale(cube.modelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
+	
 	cube.randomRGB();
 
 	// Loading cube
