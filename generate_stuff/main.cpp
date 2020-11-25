@@ -7,7 +7,7 @@ const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 576;
 int move_on_x = 15;
 int move_on_y = 25;
-int move_on_z = 35;
+int move_on_z = 40;
 std::list<Object*> list;
 
 glm::mat4 MVP;
@@ -28,14 +28,12 @@ int main()
 	Object cube(TYPE_CUBE);
 	cube.bindVBO();         //bind cube's data to a vbo
 	cube.modelMatrix =
-		glm::scale(cube.modelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
+		glm::scale(cube.modelMatrix, glm::vec3(15.0f, 15.0f, 15.0f));
 	cube.randomRGB();
 
 	// Loading cube
 	Object cube_2(TYPE_CUBE);
 	cube_2.bindVBO();         //bind cube's data to a vbo
-	cube_2.modelMatrix =
-		glm::translate(cube_2.modelMatrix, glm::vec3(2.0f, 0.0f, -3.0f));
 
 	// Loading shpere
 	Object ball(TYPE_BALL);
@@ -44,6 +42,7 @@ int main()
 	ball.loadTexture("jpg/normal.jpg");
 
 	// OGL options
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -60,6 +59,7 @@ int main()
 	// Texture enable flag
 	GLuint textureFlag = shaderProgram.getUniformLocation("textureFlag");
 	GLuint color = shaderProgram.getUniformLocation("set_color");
+	GLuint transparency = shaderProgram.getUniformLocation("transparency");
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -67,28 +67,22 @@ int main()
 		
 		shaderProgram.bind();
 
-		// Draw cube
-		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
-		glUniform3f(color, cube.color[0], cube.color[1], cube.color[2]);
-		cube.bindVAO();
-		MVP = Projection * View * cube.modelMatrix;
-		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, cube.m_vertices.size());
-		cube.unbindVAO();
-
-		// Draw cube behind cube to test transparency
-		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
-		glUniform3f(color, cube_2.color[0], cube_2.color[1], cube_2.color[2]);
-		cube_2.bindVAO();
-		MVP = Projection * View * cube_2.modelMatrix;
-		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, cube_2.m_vertices.size());
-		cube_2.unbindVAO();
+		/*
+		* The order we draw objects is VERY important. To render correctly 
+		* transparent primitives against transparent primitives, you can't rely on 
+		* the z-buffer, you have to depth-sort your geometry or use a 
+		* depth-independant rendering technique.
+		* 
+		* In our case we are rendering all opaque objects in the scene (letting
+		* the z-buffer figure out what's visible) and then render all transparent 
+		* objects from back to front.
+		*/
 
 		// Draw textured sphere
 		ball.bindVAO();
 		glUniform3f(color, ball.color[0], ball.color[1], ball.color[2]);
 		glUniform4f(textureFlag, 1.0f, 1.0f, 1.0f, 1.0f);
+		glUniform1f(transparency, 1.0f);
 		// TODO: built this if into a funcition?
 		if (ball.enableTexture)
 		{
@@ -100,6 +94,27 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, ball.m_vertices.size());
 		glBindTexture(GL_TEXTURE_2D, 0);
 		ball.unbindVAO();
+	
+		// Draw cube behind cube to test transparency
+		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
+		glUniform3f(color, cube_2.color[0], cube_2.color[1], cube_2.color[2]);
+		glUniform1f(transparency, 0.1f);
+		cube_2.bindVAO();
+		MVP = Projection * View * cube_2.modelMatrix;
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		glDrawArrays(GL_TRIANGLES, 0, cube_2.m_vertices.size());
+		cube_2.unbindVAO();
+
+		// Draw cube
+		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
+		glUniform3f(color, cube.color[0], cube.color[1], cube.color[2]);
+		glUniform1f(transparency, 0.1f);
+		cube.bindVAO();
+		MVP = Projection * View * cube.modelMatrix;
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		glDrawArrays(GL_TRIANGLES, 0, cube.m_vertices.size());
+		cube.unbindVAO();
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

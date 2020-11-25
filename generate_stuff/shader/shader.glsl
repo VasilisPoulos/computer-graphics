@@ -11,12 +11,13 @@ out vec4 out_color;
 // Values that stay constant for the whole mesh.                       
 uniform sampler2D myTextureSampler;                                    
 uniform vec4 textureFlag;
+uniform float transparency;
 
 void main() {                                                          
                                                                        
     // Output color = color of the texture at the specified UV  
     // using textureFlag to set a color if there is there is no texture
-    out_color = textureFlag * vec4((texture(myTextureSampler, UV).rgb), 1.0f) + (1.0 - textureFlag) * vec4( color, 0.3f);                         
+    out_color = textureFlag * vec4((texture(myTextureSampler, UV).rgb), 1.0f) + (1.0 - textureFlag) * vec4( color, transparency);                         
 }
 
 #shader vertex
