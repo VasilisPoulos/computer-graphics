@@ -22,7 +22,12 @@ public:
 	~Shader();
 
 private:
-	GLuint shader, uniformModel, uniformProjection, uniformView, uniformColour, uniformLocation ;
+	GLuint shader,
+		uniformModel,
+		uniformProjection,
+		uniformView,
+		uniformColour,
+		uniformLocation;
 
 	std::string readShaderCodeFromFile(const char* shaderPath);
 

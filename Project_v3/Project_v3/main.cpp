@@ -24,18 +24,13 @@ Camera camera;
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 
-// Vertex Shader
+// Shaders pack 1
 static const char* vShader = "Shaders/shader.vert";
-static const char* vShader2 = "Shaders/shader1.vert";
-
-// Fragment Shader
 static const char* fShader = "Shaders/shader.frag";
+
+// Shaders pack 2
+static const char* vShader2 = "Shaders/shader1.vert";
 static const char* fShader2 = "Shaders/shader1.frag";
-
-// Bill
-bool texture = true;
-glm::mat4 MVP;
-
 
 //Others
 GLuint VBO, VAO, shader, uniformXMove;
@@ -169,31 +164,23 @@ int main()
 {
 	mainWindow.initialize();
 
-	// SUZZANA
+	// Loading model from .obj
 	Object suzi(TYPE_SUZI);
-	Object ball(TYPE_BALL);
-	Object icos(TYPE_ICOS);
-	icos.bindVBO();
-	icos.loadTexture("jpg/earth.jpg");
-	ball.bindVBO();
 	suzi.bindVBO();
 
-	// Bill
-	suzi.modelMatrix = glm::translate(ball.modelMatrix, glm::vec3(-3.0f, 0.0f, 0.0f));
-	suzi.loadTexture("jpg/magma.jpg");
-
+	// TODO: remove Create objects\
+	make cube using the Object.cpp class
 	CreateObjects();
 	CreateShaders();
 
+	// OGL parameters
 	glDisable(GL_CULL_FACE);
 
+	// Camera init
 	camera = Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, -0.1f, 0.0f), 90.0f, 0.0f, 3.0f, 0.5f);
-
-
 	GLuint uniformModel = 0, uniformProjection = 0, uniformView = 0 ;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f,100.0f); // 100
 
-	// Loop until windows closed
 	while (!mainWindow.getShouldClose())
 	{
 		GLfloat now = glfwGetTime(); // SDL_GetPerformanceCounter();
@@ -214,7 +201,6 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 		// Main Cube
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
@@ -229,22 +215,17 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		meshList[0]->RenderMesh();
 
-		ball.bindVAO();
+		// Drawing suzi (currently testing shaders)
+		suzi.bindVAO();
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, ball.texture);
-
-		ball.modelMatrix = glm::mat4(1.0f);
-		ball.modelMatrix = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(ball.modelMatrix));
-
-		glDrawArrays(GL_TRIANGLES, 0, ball.m_vertices.size());
+		glBindTexture(GL_TEXTURE_2D, suzi.texture);
+		glDrawArrays(GL_TRIANGLES, 0, suzi.m_vertices.size());
 		glBindTexture(GL_TEXTURE_2D, 0);
-		ball.unbindVAO();
+		suzi.unbindVAO();
 
 		glUseProgram(0);
-
 		mainWindow.swapBuffers();
 	}
-
+	// TODO: cleanup after loop
 	return 0;
 }

@@ -2,10 +2,12 @@
 
 Shader::Shader()
 {
-	shader = 0, uniformModel = 0, uniformProjection = 0 , uniformLocation = 0 ;
+	shader = 0, uniformModel = 0, uniformProjection = 0 , 
+		uniformLocation = 0 ;
 }
 
-void Shader::CreateFromFiles(const char* vShader, const char* fShader)
+void Shader::CreateFromFiles(const char* vShader, 
+	const char* fShader)
 {
 	std::string vShaderCode = readShaderCodeFromFile(vShader);
 	std::string fShaderCode = readShaderCodeFromFile(fShader);
@@ -39,7 +41,8 @@ std::string Shader::readShaderCodeFromFile(const char* shaderPath)
 	return code;
 }
 
-void Shader::addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
+void Shader::addShader(GLuint theProgram, const char* shaderCode, 
+	GLenum shaderType)
 {
 	GLuint theShader = glCreateShader(shaderType);
 
@@ -67,7 +70,8 @@ void Shader::addShader(GLuint theProgram, const char* shaderCode, GLenum shaderT
 	glAttachShader(theProgram, theShader);
 }
 
-void Shader::compileShaders(const char* vShaderCode, const char* fShaderCode)
+void Shader::compileShaders(const char* vShaderCode, 
+	const char* fShaderCode)
 {
 	shader = glCreateProgram();
 
@@ -106,4 +110,5 @@ void Shader::compileShaders(const char* vShaderCode, const char* fShaderCode)
 	uniformProjection = glGetUniformLocation(shader, "projection");
 	uniformView = glGetUniformLocation(shader, "view");
 	uniformLocation = glGetUniformLocation(shader, "xMove");
+
 }
