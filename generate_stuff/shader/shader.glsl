@@ -3,17 +3,20 @@
                                                                        
 // Interpolated values from the vertex shaders                         
 in vec2 UV;                                                            
-                                                                       
+in vec3 color;
+                                                          
 // Ouput data                                                          
-out vec3 color;                                                        
+out vec3 out_color;                                                        
                                                                        
 // Values that stay constant for the whole mesh.                       
 uniform sampler2D myTextureSampler;                                    
-                                                                       
+uniform vec3 textureFlag;
+
 void main() {                                                          
                                                                        
-    // Output color = color of the texture at the specified UV         
-    color = texture(myTextureSampler, UV).rgb;                         
+    // Output color = color of the texture at the specified UV  
+    // using textureFlag to set a color if there is there is no texture
+    out_color = (textureFlag * texture(myTextureSampler, UV).rgb) + (1.0 - textureFlag) * color;                         
 }
 
 #shader vertex
@@ -24,7 +27,8 @@ layout(location = 1) in vec2 vertexUV;
                                                                        
 // Output data ; will be interpolated for each fragment.               
 out vec2 UV;                                                           
-                                                                       
+out vec3 color;              
+
 // Values that stay constant for the whole mesh.                       
 uniform mat4 MVP;                                                      
                                                                        
@@ -35,4 +39,6 @@ void main() {
                                                                        
     // UV of the vertex. No special space for this one.                
     UV = vertexUV;
+
+    color = vec3(1.0f, 0.0f, 0.0f);
 }

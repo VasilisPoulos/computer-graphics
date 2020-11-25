@@ -35,7 +35,7 @@ int main()
 	Object ball(TYPE_BALL);
 	list.push_back(&ball);
 	ball.bindVBO();
-	ball.loadTexture("jpg/magma.jpg");
+	ball.loadTexture("jpg/normal.jpg");
 
 	// OGL options
 	glEnable(GL_DEPTH_TEST);
@@ -50,6 +50,10 @@ int main()
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 
+	//color enable
+	GLuint textureFlag = shaderProgram.getUniformLocation("textureFlag");
+	//glUniform3f(textureFlag, 1.0f, 1.0f, 1.0f);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -58,6 +62,7 @@ int main()
 		shaderProgram.bind();
 
 		// Draw cube
+		glUniform3f(textureFlag, 0.0f, 0.0f, 0.0f);
 		cube.bindVAO();
 		MVP = Projection * View * cube.modelMatrix;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
@@ -66,6 +71,7 @@ int main()
 
 		// Draw textured sphere
 		ball.bindVAO();
+		glUniform3f(textureFlag, 1.0f, 1.0f, 1.0f);
 		// TODO: built this if into a funcition?
 		if (ball.enableTexture)
 		{
