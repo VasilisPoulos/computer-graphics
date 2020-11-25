@@ -88,7 +88,7 @@ void Object::bindVBO()
 
 bool Object::loadOBJ(const char* path)
 {
-    printf("Loading OBJ file %s...\n", path);
+    printf("$Obj :: Loading OBJ file %s...\n", path);
 
     std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
     std::vector<glm::vec3> temp_vertices;
@@ -211,7 +211,7 @@ void Object::loadTexture(const char* path) {
 void Object::switchTexture()
 {
     enableTexture = !enableTexture;
-    std::cout << "enableTexture set to :" << enableTexture << "\n";
+    std::cout << "$Obj :: EnableTexture set to: " << enableTexture << "\n";
 }
 
 void Object::randomRGB()
@@ -220,6 +220,6 @@ void Object::randomRGB()
     float r = ((double)rand() / (RAND_MAX));
     float g = ((double)rand() / (RAND_MAX));
     float b = ((double)rand() / (RAND_MAX));
-    std::cout << r << " " << g << " " << b << "\n";
+    std::cout << "$Obj :: RGB value set to: " << r << " " << g << " " << b << "\n";
     color = glm::vec3(r, g, b);
 }

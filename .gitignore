@@ -4,3 +4,7 @@ External Libs/
 generate_stuff/Debug/
 generate_stuff/Debug/generate_stuff.exe
 generate_stuff/.vs
+*.db
+*.db
+*.exe
+*.ilk

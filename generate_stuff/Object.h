@@ -14,6 +14,7 @@ const int TYPE_CUBE = 3;
 class Object
 {
 public:
+	//TODO: Make some private, clean up
 	Object(int objectId);
 	GLuint objectVboId;
 	const char* objectPath;
