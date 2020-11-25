@@ -213,3 +213,13 @@ void Object::switchTexture()
     enableTexture = !enableTexture;
     std::cout << "enableTexture set to :" << enableTexture << "\n";
 }
+
+void Object::randomRGB()
+{
+    srand(time(NULL));
+    float r = ((double)rand() / (RAND_MAX));
+    float g = ((double)rand() / (RAND_MAX));
+    float b = ((double)rand() / (RAND_MAX));
+    std::cout << r << " " << g << " " << b << "\n";
+    color = glm::vec3(r, g, b);
+}

@@ -31,14 +31,15 @@ out vec3 color;
 
 // Values that stay constant for the whole mesh.                       
 uniform mat4 MVP;                                                      
-                                                                       
+uniform vec3 set_color;                                                                       
+
 void main() {                                                          
                                                                        
     // Output position of the vertex, in clip space : MVP * position   
     gl_Position = MVP * vec4(vertexPosition_modelspace, 1);            
-                                                                       
+                                                                 
     // UV of the vertex. No special space for this one.                
     UV = vertexUV;
 
-    color = vec3(1.0f, 0.5f, 0.0f);
+    color = set_color;
 }

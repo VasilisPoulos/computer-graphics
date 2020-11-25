@@ -24,6 +24,7 @@ public:
 	std::vector<glm::vec2> m_uvs;
 	std::vector<glm::vec3> m_normals;
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f); // Default color red
 	unsigned int texture;
 	bool enableTexture = false;
 
@@ -33,4 +34,5 @@ public:
 	void bindVBO();
 	void bindVAO();
 	void unbindVAO();
+	void randomRGB();
 };
