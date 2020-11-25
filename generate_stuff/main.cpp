@@ -1,4 +1,5 @@
 ﻿#include "Object.h"
+#include <list>
 
 // settings
 const unsigned int SCR_WIDTH = 1024;
@@ -7,7 +8,8 @@ int move_on_x = 0;
 int move_on_y = 0;
 int move_on_z = 10;
 bool texture = true;
-Object* target;
+std::list<Object*> list;
+
 glm::mat4 MVP;
 
 const char* fragmentShaderCode = "#version 330 core"
@@ -78,7 +80,7 @@ int main()
 
     // SUZZANA
     Object suzi(TYPE_SUZI);
-    target = &suzi;
+    list.push_back(&suzi);
     Object ball(TYPE_BALL);
     Object icos(TYPE_ICOS);
     icos.bindVBO();
@@ -306,8 +308,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
     else if (key == GLFW_KEY_T && action == GLFW_PRESS)
     {
-        //TODO: CHANGE BAD IMPLEMENTATION
-        target[0].switchTexture();
+        
+       list.front()->switchTexture();
     }
 }
 
