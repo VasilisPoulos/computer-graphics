@@ -25,9 +25,11 @@ public:
 	std::vector<glm::vec3> m_normals;
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
 	unsigned int texture;
+	bool enableTexture = false;
 
 	bool loadOBJ(const char* path);
 	void loadTexture(const char* path);
+	void switchTexture();
 	void bindVBO();
 	void bindVAO();
 	void unbindVAO();

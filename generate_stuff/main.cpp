@@ -7,7 +7,7 @@ int move_on_x = 0;
 int move_on_y = 0;
 int move_on_z = 10;
 bool texture = true;
-
+Object* target;
 glm::mat4 MVP;
 
 const char* fragmentShaderCode = "#version 330 core"
@@ -78,6 +78,7 @@ int main()
 
     // SUZZANA
     Object suzi(TYPE_SUZI);
+    target = &suzi;
     Object ball(TYPE_BALL);
     Object icos(TYPE_ICOS);
     icos.bindVBO();
@@ -109,15 +110,18 @@ int main()
     {  
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //glfwSetKeyCallback(window, key_callback);
+        glfwSetKeyCallback(window, key_callback);
         //Model = glm::rotate(Model, glm::radians(0.05f), glm::vec3(0.0f, 1.0f, 0.0f));
         //MVP = Projection * View * Model;
        
         glUseProgram(shaderProgram);
         
         suzi.bindVAO();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, suzi.texture);
+        if (suzi.enableTexture)
+        {
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, suzi.texture);
+        }
         MVP = Projection * View * suzi.modelMatrix;
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, suzi.m_vertices.size());
@@ -302,11 +306,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
     else if (key == GLFW_KEY_T && action == GLFW_PRESS)
     {
-        texture = !texture;
-        std::cout << "texture " << texture << "\n";
-        if (!texture) {
-            std::cout << "binded to default texture \n";
-        }
+        //TODO: CHANGE BAD IMPLEMENTATION
+        target[0].switchTexture();
     }
 }
 

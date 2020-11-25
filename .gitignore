@@ -1,5 +1,6 @@
-x64/
+.git/
 .vs/
+External Libs/
 generate_stuff/Debug/
-Project_v3/Project_v3/Debug
-Project_v3/Debug/
+Project_v3/Project_v3/Debug/
+generate_stuff/.vs

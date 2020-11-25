@@ -206,3 +206,10 @@ void Object::loadTexture(const char* path) {
     }
     stbi_image_free(data);
 }
+
+// Used on keycallback to enable/disable texture
+void Object::switchTexture()
+{
+    enableTexture = !enableTexture;
+    std::cout << "enableTexture set to :" << enableTexture << "\n";
+}
