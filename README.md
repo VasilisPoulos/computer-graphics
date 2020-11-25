@@ -7,10 +7,10 @@ First OpenGL programming exercice for the course Computer Graphics and Interacti
 ## Main tasks
 * Task 1
   * - [x] Make 100 X 100 cube 
-  * - [ ] Make cube transparent
+  * - [x] Make cube transparent
   * - [x] random colour
   * - [x] black background
-  * - [ ] ESC to exit
+  * - [x] ESC to exit
 * Task 2
   * - [ ] Spacebar to spawn object
   * - [ ] Make objects move
