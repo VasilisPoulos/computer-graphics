@@ -5,7 +5,7 @@
 // settings
 const unsigned int SCR_WIDTH = 600;
 const unsigned int SCR_HEIGHT = 600;
-int move_on_x = 15;
+int move_on_x = 35;
 int move_on_y = 25;
 int move_on_z = 40;
 std::list<Object*> target; // Target SPH sphere to enable/disable its texture

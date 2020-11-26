@@ -1,4 +1,0 @@
-C:\Users\bill2\Documents\Visual Studio 2019\Projects\generate_stuff\Debug\generate_stuff.exe
-C:\Users\bill2\Documents\Visual Studio 2019\Projects\generate_stuff\Debug\generate_stuff.pdb
-C:\Users\bill2\Desktop\computer-graphics\generate_stuff\Debug\generate_stuff.exe
-C:\Users\bill2\Desktop\computer-graphics\generate_stuff\Debug\generate_stuff.pdb
