@@ -12,11 +12,11 @@ Object::Object(int objectId)
             throw("Loading SUZI failed");
         }
     }
-    else if (objectId == TYPE_BALL)
+    else if (objectId == TYPE_SPHERE)
     {
         if (!loadOBJ("objectFiles/ball.obj"))
         {
-            throw("Loading BALL failed");
+            throw("Loading SPHERE failed");
         }
     }
     else if (objectId == TYPE_ICOS)

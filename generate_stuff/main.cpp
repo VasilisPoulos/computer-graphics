@@ -2,64 +2,67 @@
 #include "ShaderProgram.h"
 #include <list>
 
-// settings
+// Window Settings.
 const unsigned int SCR_WIDTH = 600;
 const unsigned int SCR_HEIGHT = 600;
+
+// TEST Camera init positions.
 int move_on_x = 35;
 int move_on_y = 25;
 int move_on_z = 40;
-std::list<Object*> target; // Target SPH sphere to enable/disable its texture
 
+// Target SPH sphere to enable/disable its texture.
+std::list<Object*> target;
+
+// List of spawned objects.
 std::list<Object> spawnObjects;
 std::list<Object>::iterator it;
 
-
+// Used for MVP uniform in shaders.
 glm::mat4 MVP;
 
-// Methods Init
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+// Methods Init.
 GLFWwindow* Init();
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
 {
-	// Setup 
 	GLFWwindow* window = Init();
 	ShaderProgram shaderProgram;
 
-	// Loading cube
-	Object cube(TYPE_CUBE);
-	cube.bindVBO();         //bind cube's data to a vbo
-	cube.modelMatrix =
-		glm::translate(cube.modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
-	cube.modelMatrix =
-		glm::scale(cube.modelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
-	
-	cube.randomRGB();
+	/*
+	 *	Loading objects.
+	 */
+	Object SC_cube(TYPE_CUBE);
+	SC_cube.bindVBO();
+	SC_cube.modelMatrix =
+		glm::translate(SC_cube.modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
+	SC_cube.modelMatrix =
+		glm::scale(SC_cube.modelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
+	SC_cube.randomRGB();
 
-	// Loading cube
-	Object cube_2(TYPE_CUBE);
-	cube_2.bindVBO();         //bind cube's data to a vbo
+	// Test cube for debuging.
+	Object TEST_cube_2(TYPE_CUBE);
+	TEST_cube_2.bindVBO();
 
-	// Loading test cube
-	Object test(TYPE_CUBE);
-	test.modelMatrix =
-		glm::translate(test.modelMatrix, glm::vec3(4.0f, 0.0f, 0.0f));
-	test.bindVBO();         //bind cube's data to a vbo
+	Object SPH_sphere(TYPE_SPHERE);
+	target.push_back(&SPH_sphere);
+	SPH_sphere.bindVBO();
+	SPH_sphere.loadTexture("jpg/normal.jpg");
 
-	// Loading shpere
-	Object ball(TYPE_BALL);
-	target.push_back(&ball);
-	ball.bindVBO();
-	ball.loadTexture("jpg/normal.jpg");
-
-	// OGL options
+	/*
+	 * 	OGL options: z-buffer and blend dont work well togeather
+	 *  be careful when rendering objects.
+	 */
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	//  Camera
+	/*
+	 *	TEST Camera init.
+	 */
 	GLuint MatrixID = shaderProgram.getUniformLocation("MVP");
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 0.1f, 100.0f);
 	glm::mat4 View = glm::lookAt(
@@ -68,46 +71,53 @@ int main()
 		glm::vec3(0, 1, 0)							// Head is up (set to 0,-1,0 to look upside-down)
 	);
 
-	// Texture enable flag
+	/*
+	 *	Uniform locations.
+	 *	textureFlag  (vec4)	= enables/disables the texture of the object, if there
+	 *						  is one.
+	 *	color		 (vec3) = the color that an object should have when drawn.
+	 *	transparency (vec1)	= the level of an objects transparency
+	 */
 	GLuint textureFlag = shaderProgram.getUniformLocation("textureFlag");
 	GLuint color = shaderProgram.getUniformLocation("set_color");
 	GLuint transparency = shaderProgram.getUniformLocation("transparency");
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwSetKeyCallback(window, key_callback);
-		
+
 		shaderProgram.bind();
 
 		/*
-		* The order we draw objects is VERY important. To render correctly 
-		* transparent primitives against transparent primitives, you can't rely on 
-		* the z-buffer, you have to depth-sort your geometry or use a 
+		* The order we draw objects is VERY important. To render correctly
+		* transparent primitives against transparent primitives, you can't rely
+		* on the z-buffer, you have to depth-sort your geometry or use a
 		* depth-independant rendering technique.
-		* 
+		*
 		* In our case we are rendering all opaque objects in the scene (letting
-		* the z-buffer figure out what's visible) and then render all transparent 
+		* the z-buffer figure out what's visible) and then render all transparent
 		* objects from back to front.
 		*/
 
-		// Draw textured sphere (opaque)
-		ball.bindVAO();
-		glUniform3f(color, ball.color[0], ball.color[1], ball.color[2]);
+		// 1. Draw textured sphere SPH(opaque).
+		SPH_sphere.bindVAO();
+		glUniform3f(color, SPH_sphere.color[0], SPH_sphere.color[1], SPH_sphere.color[2]);
 		glUniform4f(textureFlag, 1.0f, 1.0f, 1.0f, 1.0f);
 		glUniform1f(transparency, 1.0f);
 		// TODO: built this if into a funcition?
-		if (ball.enableTexture)
+		if (SPH_sphere.enableTexture)
 		{
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, ball.texture);
+			glBindTexture(GL_TEXTURE_2D, SPH_sphere.texture);
 		}
-		MVP = Projection * View * ball.modelMatrix;
+		MVP = Projection * View * SPH_sphere.modelMatrix;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, ball.m_vertices.size());
+		glDrawArrays(GL_TRIANGLES, 0, SPH_sphere.m_vertices.size());
 		glBindTexture(GL_TEXTURE_2D, 0);
-		ball.unbindVAO();
-	
-		// Spawn items (opaque)
+		SPH_sphere.unbindVAO();
+
+		// 2. Spawn items (opaque).
 		for (it = spawnObjects.begin(); it != spawnObjects.end(); ++it) {
 			glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
 			glUniform3f(color, it->color[0], it->color[1], it->color[2]);
@@ -119,46 +129,46 @@ int main()
 			it->unbindVAO();
 		}
 
-		// Draw cube behind cube to test transparency (back-transparent)
+		// 3. Draw cube behind cube to TEST transparency (back-transparent).
 		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
-		glUniform3f(color, cube_2.color[0], cube_2.color[1], cube_2.color[2]);
+		glUniform3f(color, TEST_cube_2.color[0], TEST_cube_2.color[1], TEST_cube_2.color[2]);
 		glUniform1f(transparency, 0.1f);
-		cube_2.bindVAO();
-		MVP = Projection * View * cube_2.modelMatrix;
+		TEST_cube_2.bindVAO();
+		MVP = Projection * View * TEST_cube_2.modelMatrix;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, cube_2.m_vertices.size());
-		cube_2.unbindVAO();
-		
+		glDrawArrays(GL_TRIANGLES, 0, TEST_cube_2.m_vertices.size());
+		TEST_cube_2.unbindVAO();
 
-		// Draw cube (front-transparent)
+
+		// 4. Draw cube (front-transparent).
 		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
-		glUniform3f(color, cube.color[0], cube.color[1], cube.color[2]);
+		glUniform3f(color, SC_cube.color[0], SC_cube.color[1], SC_cube.color[2]);
 		glUniform1f(transparency, 0.1f);
-		cube.bindVAO();
-		MVP = Projection * View * cube.modelMatrix;
+		SC_cube.bindVAO();
+		MVP = Projection * View * SC_cube.modelMatrix;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, cube.m_vertices.size());
-		cube.unbindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, SC_cube.m_vertices.size());
+		SC_cube.unbindVAO();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	// Cleanup 
-	// TODO: Make a cleanup function
-	glDeleteBuffers(1, &cube.vertexbuffer);
-	glDeleteBuffers(1, &cube.uvbuffer);
+	// Cleanup. 
+	// TODO: Make a cleanup function. (this is not needed? Deconstructors)
+	glDeleteBuffers(1, &SC_cube.vertexbuffer);
+	glDeleteBuffers(1, &SC_cube.uvbuffer);
 
-	glDeleteBuffers(1, &cube_2.vertexbuffer);
-	glDeleteBuffers(1, &cube_2.uvbuffer);
+	glDeleteBuffers(1, &TEST_cube_2.vertexbuffer);
+	glDeleteBuffers(1, &TEST_cube_2.uvbuffer);
 
-	glDeleteBuffers(1, &ball.vertexbuffer);
-	glDeleteBuffers(1, &ball.uvbuffer);
+	glDeleteBuffers(1, &SPH_sphere.vertexbuffer);
+	glDeleteBuffers(1, &SPH_sphere.uvbuffer);
 
 	glfwTerminate();
 	return 0;
 }
 
-// Method implementations
+// Method implementations.
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -166,7 +176,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 GLFWwindow* Init()
 {
-	// GLFW Init
+	// GLFW Init.
 	if (!glfwInit())
 	{
 		printf("GLFW Initialisation Failed");
@@ -174,7 +184,7 @@ GLFWwindow* Init()
 		exit(1);
 	}
 
-	// Initialise Window
+	// Initialise Window.
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -189,7 +199,7 @@ GLFWwindow* Init()
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	// GLEW Init
+	// GLEW Init.
 	if (glewInit() != GLEW_OK)
 	{
 		std::cout << "GLEW Initialisation Failed";
@@ -213,11 +223,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		int type = rand() % 3 + 1;
 		Object spawnable(type);
-		spawnable.bindVBO();         //bind cube's data to a vbo
+		spawnable.bindVBO();         //bind cube's data to a vbo.
 		spawnable.randomRGB();
 		spawnable.modelMatrix =
 			glm::translate(spawnable.modelMatrix, spawnable.color);
 		spawnObjects.push_back(spawnable);
-		std::cout << "$Main :: Generating object of type" << type << "VAO ID -> " << spawnable.VertexArrayID <<"\n";
+		std::cout << "$Main :: Generating object of type" << type << "VAO ID -> " << spawnable.VertexArrayID << "\n";
 	}
 }
