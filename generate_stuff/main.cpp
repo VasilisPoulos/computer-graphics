@@ -9,9 +9,9 @@ const unsigned int SCR_WIDTH = 600;
 const unsigned int SCR_HEIGHT = 600;
 
 // TEST Camera init positions.
-int move_on_x = 35;
-int move_on_y = 25;
-int move_on_z = 40;
+int move_on_x = 0;
+int move_on_y = 0;
+int move_on_z = 350;
 
 // Target SPH sphere to enable/disable its texture.
 std::list<Object*> target;
@@ -38,10 +38,13 @@ int main()
 	 */
 	Object SC_cube(TYPE_CUBE);
 	SC_cube.bindVBO();
+	std::cout << glm::to_string(SC_cube.modelMatrix) << std::endl;
+	SC_cube.modelMatrix =
+		glm::scale(SC_cube.modelMatrix, glm::vec3(50.0f, 50.0f, 50.0f));
+	std::cout << glm::to_string(SC_cube.modelMatrix) << std::endl;
 	SC_cube.modelMatrix =
 		glm::translate(SC_cube.modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
-	SC_cube.modelMatrix =
-		glm::scale(SC_cube.modelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
+	std::cout << glm::to_string(SC_cube.modelMatrix) << std::endl;
 	SC_cube.randomRGB();
 
 	// Test cube for debuging.
@@ -49,6 +52,10 @@ int main()
 	TEST_cube_2.bindVBO();
 
 	Object SPH_sphere(TYPE_SPHERE);
+	SPH_sphere.modelMatrix =
+		glm::scale(SPH_sphere.modelMatrix, glm::vec3(25.0f, 25.0f, 25.0f));
+	SPH_sphere.modelMatrix =
+		glm::translate(SPH_sphere.modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 	target.push_back(&SPH_sphere);
 	SPH_sphere.bindVBO();
 	SPH_sphere.loadTexture("jpg/normal.jpg");
@@ -68,10 +75,10 @@ int main()
 	 *	TEST Camera init.
 	 */
 	GLuint MatrixID = shaderProgram.getUniformLocation("MVP");
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 0.1f, 100.0f);
+	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 0.1f, 1000.0f);
 	glm::mat4 View = glm::lookAt(
 		glm::vec3(move_on_x, move_on_y, move_on_z), // Camera is at (4,3,3), in World Space
-		glm::vec3(0, 0, 0),							// and looks at the origin
+		glm::vec3(50, 50, 50),							// and looks at the origin
 		glm::vec3(0, 1, 0)							// Head is up (set to 0,-1,0 to look upside-down)
 	);
 
@@ -143,7 +150,6 @@ int main()
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, TEST_cube_2.m_vertices.size());
 		TEST_cube_2.unbindVAO();
-
 
 		// 4. Draw cube (front-transparent).
 		glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -240,6 +246,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//std::cout << "44444444>"<<glm::to_string(spawnable.modelMatrix[3]) << std::endl;
 		//std::cout << glm::to_string(spawnable.modelMatrix.m33) << std::endl;
-		std::cout << "$Main :: Generating object of type" << randomType << "VAO ID -> " << spawnable.vertexArrayID << "\n";
+		std::cout << "$Main :: Generating object of type " << randomType << " VAO ID -> " << spawnable.vertexArrayID << "\n";
 	}
 }
