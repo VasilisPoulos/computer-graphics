@@ -151,14 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ShaderProgram.h" />
-    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="src\Object.h" />
+    <ClInclude Include="src\ShaderProgram.h" />
+    <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

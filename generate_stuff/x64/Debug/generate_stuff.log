@@ -1,0 +1,61 @@
+﻿  main.cpp
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\main.cpp(127,61): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\main.cpp(140,55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\main.cpp(151,62): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\main.cpp(161,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Object.cpp
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Object.cpp(222,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Object.cpp(223,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Object.cpp(224,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Object.cpp(225,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  ShaderProgram.cpp
+  Generating Code...
+main.obj : error LNK2019: unresolved external symbol __imp_glewInit referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwInit referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwTerminate referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwWindowHint referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwDestroyWindow referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwWindowShouldClose referenced in function main
+main.obj : error LNK2019: unresolved external symbol glfwSetWindowShouldClose referenced in function "void __cdecl key_callback(struct GLFWwindow *,int,int,int,int)" (?key_callback@@YAXPEAUGLFWwindow@@HHHH@Z)
+main.obj : error LNK2019: unresolved external symbol glfwSetWindowTitle referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwSetFramebufferSizeCallback referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwPollEvents referenced in function main
+main.obj : error LNK2019: unresolved external symbol glfwSetKeyCallback referenced in function main
+main.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function "struct GLFWwindow * __cdecl Init(void)" (?Init@@YAPEAUGLFWwindow@@XZ)
+main.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function main
+main.obj : error LNK2019: unresolved external symbol __imp___glewActiveTexture referenced in function main
+main.obj : error LNK2019: unresolved external symbol __imp___glewDeleteBuffers referenced in function main
+main.obj : error LNK2019: unresolved external symbol __imp___glewUniform1f referenced in function main
+main.obj : error LNK2019: unresolved external symbol __imp___glewUniform3f referenced in function main
+main.obj : error LNK2019: unresolved external symbol __imp___glewUniform4f referenced in function main
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewUniform4f
+main.obj : error LNK2019: unresolved external symbol __imp___glewUniformMatrix4fv referenced in function main
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewUniformMatrix4fv
+main.obj : error LNK2019: unresolved external symbol __imp___glewUseProgram referenced in function "public: void __cdecl ShaderProgram::bind(void)const " (?bind@ShaderProgram@@QEBAXXZ)
+ShaderProgram.obj : error LNK2001: unresolved external symbol __imp___glewUseProgram
+Object.obj : error LNK2019: unresolved external symbol __imp___glewBindBuffer referenced in function "public: void __cdecl Object::bindVBO(void)" (?bindVBO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewBufferData referenced in function "public: void __cdecl Object::bindVBO(void)" (?bindVBO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewGenBuffers referenced in function "public: void __cdecl Object::bindVBO(void)" (?bindVBO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewDisableVertexAttribArray referenced in function "public: void __cdecl Object::unbindVAO(void)" (?unbindVAO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewEnableVertexAttribArray referenced in function "public: void __cdecl Object::bindVBO(void)" (?bindVBO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewVertexAttribPointer referenced in function "public: void __cdecl Object::bindVBO(void)" (?bindVBO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewGenerateMipmap referenced in function "public: void __cdecl Object::loadTexture(char const *)" (?loadTexture@Object@@QEAAXPEBD@Z)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewBindVertexArray referenced in function "public: void __cdecl Object::bindVAO(void)" (?bindVAO@Object@@QEAAXXZ)
+Object.obj : error LNK2019: unresolved external symbol __imp___glewGenVertexArrays referenced in function "public: void __cdecl Object::bindVBO(void)" (?bindVBO@Object@@QEAAXXZ)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewAttachShader referenced in function "private: unsigned int __cdecl ShaderProgram::createShaders(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?createShaders@ShaderProgram@@AEAAIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewCompileShader referenced in function "private: unsigned int __cdecl ShaderProgram::compileShader(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?compileShader@ShaderProgram@@AEAAIIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewCreateProgram referenced in function "private: unsigned int __cdecl ShaderProgram::createShaders(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?createShaders@ShaderProgram@@AEAAIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewCreateShader referenced in function "private: unsigned int __cdecl ShaderProgram::compileShader(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?compileShader@ShaderProgram@@AEAAIIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewDeleteProgram referenced in function "public: __cdecl ShaderProgram::~ShaderProgram(void)" (??1ShaderProgram@@QEAA@XZ)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewDeleteShader referenced in function "private: unsigned int __cdecl ShaderProgram::compileShader(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?compileShader@ShaderProgram@@AEAAIIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewDetachShader referenced in function "private: unsigned int __cdecl ShaderProgram::createShaders(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?createShaders@ShaderProgram@@AEAAIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewGetShaderInfoLog referenced in function "private: unsigned int __cdecl ShaderProgram::compileShader(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?compileShader@ShaderProgram@@AEAAIIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewGetShaderiv referenced in function "private: unsigned int __cdecl ShaderProgram::compileShader(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?compileShader@ShaderProgram@@AEAAIIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewGetUniformLocation referenced in function "public: int __cdecl ShaderProgram::getUniformLocation(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?getUniformLocation@ShaderProgram@@QEAAHAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewLinkProgram referenced in function "private: unsigned int __cdecl ShaderProgram::createShaders(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?createShaders@ShaderProgram@@AEAAIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewShaderSource referenced in function "private: unsigned int __cdecl ShaderProgram::compileShader(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?compileShader@ShaderProgram@@AEAAIIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+ShaderProgram.obj : error LNK2019: unresolved external symbol __imp___glewValidateProgram referenced in function "private: unsigned int __cdecl ShaderProgram::createShaders(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?createShaders@ShaderProgram@@AEAAIAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\\..\External Libs\GLEW\lib\Release\Win32\glew32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\\..\External Libs\GLFW\lib-vc2019\glfw3.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\x64\Debug\generate_stuff.exe : fatal error LNK1120: 43 unresolved externals
