@@ -2,6 +2,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #pragma warning(disable : 4996)
+#include <stdio.h> 
+#include <string.h> 
+
 
 Object::Object(int objectId)
 {
@@ -222,4 +225,26 @@ void Object::randomRGB()
     float b = ((double)rand() / (RAND_MAX));
     std::cout << "$Obj :: RGB value set to: " << r << " " << g << " " << b << "\n";
     color = glm::vec3(r, g, b);
+}
+
+void Object::moveFrom(char* input)
+{   
+    // Returns first token  
+    char* token = strtok(input, ",");
+
+    // Keep printing tokens while one of the 
+    // delimiters present in str[]. 
+    while (token != NULL)
+    {
+        printf("%s\n", token);
+        token = strtok(NULL, ",");
+    }
+    std::cout << token[1];
+    //x = 0, y = 0;
+    //if (z > 10) {
+    //    z -= 0.1;
+    //}else if (z < -10){
+    //    z += 0.1;
+    //}
+    //modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
 }

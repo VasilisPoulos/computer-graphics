@@ -43,4 +43,5 @@ public:
 	void bindVAO();
 	void unbindVAO();
 	void randomRGB();
+	void moveFrom(char* input);
 };

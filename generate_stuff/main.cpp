@@ -1,6 +1,8 @@
 ﻿#include "Object.h"
 #include "ShaderProgram.h"
 #include <list>
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/ext.hpp"
 
 // Window Settings.
 const unsigned int SCR_WIDTH = 600;
@@ -55,6 +57,8 @@ int main()
 	 * 	OGL options: z-buffer and blend dont work well togeather
 	 *  be careful when rendering objects.
 	 */
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -123,6 +127,7 @@ int main()
 			glUniform3f(color, it->color[0], it->color[1], it->color[2]);
 			glUniform1f(transparency, 1.0f);
 			it->bindVAO();
+			//it->moveFrom(glm::to_string(it->modelMatrix[3]).c_str());
 			MVP = Projection * View * it->modelMatrix;
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 			glDrawArrays(GL_TRIANGLES, 0, it->m_vertices.size());
@@ -225,9 +230,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		Object spawnable(randomType);
 		spawnable.bindVBO();         
 		spawnable.randomRGB();
+
+		/* Objects spawn in (0, 0, 0) this is true without the next line but 
+		 * it is kept form compehensiveness.
+		 */
 		spawnable.modelMatrix =
-			glm::translate(spawnable.modelMatrix, spawnable.color);
+			glm::translate(spawnable.modelMatrix, glm::vec3(3.0f, 5.0f, 7.0f));
 		spawnObjects.push_back(spawnable);
-		std::cout << "$Main :: Generating object of type" << randomType << "VAO ID -> " << spawnable.VertexArrayID << "\n";
+
+		//std::cout << "44444444>"<<glm::to_string(spawnable.modelMatrix[3]) << std::endl;
+		//std::cout << glm::to_string(spawnable.modelMatrix.m33) << std::endl;
+		std::cout << "$Main :: Generating object of type" << randomType << "VAO ID -> " << spawnable.vertexArrayID << "\n";
 	}
 }
