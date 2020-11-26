@@ -8,7 +8,7 @@
 
 const int TYPE_SUZI = 0;
 const int TYPE_SPHERE = 1;
-const int TYPE_ICOS = 2;
+const int TYPE_CILINDER = 2;
 const int TYPE_CUBE = 3;
 
 class Object
@@ -16,18 +16,25 @@ class Object
 public:
 	//TODO: Make some private, clean up
 	Object(int objectId);
-	GLuint objectVboId;
 	const char* objectPath;
-	GLuint vertexbuffer;
-	GLuint uvbuffer;
-	GLuint VertexArrayID;
+
+	// Geometric parameters.
 	std::vector<glm::vec3> m_vertices;
 	std::vector<glm::vec2> m_uvs;
 	std::vector<glm::vec3> m_normals;
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
+
+	// Texture and color.
 	glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f); // Default color red
 	unsigned int texture;
 	bool enableTexture = false;
+
+	// Opengl IDs 
+	// TODO: duplication? (similar names)
+	GLuint vertexArrayID;
+	GLuint vertexBufferID;
+	GLuint vertexbuffer;
+	GLuint uvbuffer;
 
 	bool loadOBJ(const char* path);
 	void loadTexture(const char* path);

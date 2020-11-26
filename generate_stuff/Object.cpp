@@ -7,21 +7,21 @@ Object::Object(int objectId)
 {
     if (objectId == TYPE_SUZI)
     {
-        if (!loadOBJ("objectFiles/suzi.obj"))
+        if (!loadOBJ("objectFiles/Extras/suzi.obj"))
         {
             throw("Loading SUZI failed");
         }
     }
     else if (objectId == TYPE_SPHERE)
     {
-        if (!loadOBJ("objectFiles/ball.obj"))
+        if (!loadOBJ("objectFiles/sphere.obj"))
         {
             throw("Loading SPHERE failed");
         }
     }
-    else if (objectId == TYPE_ICOS)
+    else if (objectId == TYPE_CILINDER)
     {
-        if (!loadOBJ("objectFiles/icosphere_simple.obj"))
+        if (!loadOBJ("objectFiles/cilinder.obj"))
         {
             throw("Loading ICOS failed");
         }
@@ -38,7 +38,7 @@ Object::Object(int objectId)
 
 void Object::bindVAO()
 {
-    glBindVertexArray(VertexArrayID);
+    glBindVertexArray(vertexArrayID);
 }
 
 void Object::unbindVAO()
@@ -50,8 +50,8 @@ void Object::unbindVAO()
 
 void Object::bindVBO()
 {
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
+    glGenVertexArrays(1, &vertexArrayID);
+    glBindVertexArray(vertexArrayID);
 
     glGenBuffers(1, &vertexbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);

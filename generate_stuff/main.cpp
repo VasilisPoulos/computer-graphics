@@ -221,13 +221,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-		int type = rand() % 3 + 1;
-		Object spawnable(type);
-		spawnable.bindVBO();         //bind cube's data to a vbo.
+		int randomType = rand() % 3 + 1;
+		Object spawnable(randomType);
+		spawnable.bindVBO();         
 		spawnable.randomRGB();
 		spawnable.modelMatrix =
 			glm::translate(spawnable.modelMatrix, spawnable.color);
 		spawnObjects.push_back(spawnable);
-		std::cout << "$Main :: Generating object of type" << type << "VAO ID -> " << spawnable.VertexArrayID << "\n";
+		std::cout << "$Main :: Generating object of type" << randomType << "VAO ID -> " << spawnable.VertexArrayID << "\n";
 	}
 }
