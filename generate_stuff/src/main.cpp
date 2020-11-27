@@ -32,6 +32,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void controlSphere(GLFWwindow* window, int key, int scancode, int action, int mods);
 void genObject();
+float randomFloat(float a, float b);
 
 int main()
 {
@@ -229,7 +230,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	controlSphere(window, key, scancode, action, mods);
 }
 
+float randomFloat(float min, float max) {
+	return ((float)rand() / RAND_MAX) * (max - min) + min;
+}
+
 void genObject() {
+	srand(time(NULL));
 	int randomType = rand() % 3 + 1;
 	Object spawnable(randomType);
 	spawnable.randomRGB();
@@ -237,13 +243,21 @@ void genObject() {
 	/* Objects spawn in (0, 0, 0) this is true without the next line but
 	 * it is kept form compehensiveness.
 	 */
-	glm::vec3 translate(3.0f, 5.0f, 7.0f);
+	
+	float v_x = randomFloat(0.1, 0.9);
+	float v_y = randomFloat(0.1, 0.9);
+	float v_z = randomFloat(0.1, 0.9);
+
+	glm::vec3 direction_v = glm::vec3(v_x, v_y, v_z);
+	glm::vec3 translate(0.0f, 0.0f, 0.0f);
 	spawnable.moveObject(translate);
 	spawnObjects.push_back(spawnable);
 
 	//std::cout << "44444444>"<<glm::to_string(spawnable.modelMatrix[3]) << std::endl;
 	//std::cout << glm::to_string(spawnable.modelMatrix.m33) << std::endl;
 	std::cout << "$Main :: Generating object of type " << randomType << " VAO ID -> " << spawnable.getVertexArrayID() << "\n";
+	std::cout << "$Main :: Object type "<< randomType << " ID: " << spawnable.getVertexArrayID() << " speed is ("<< 
+		v_x <<", "<< v_y << ", " << v_z <<")\n";
 }
 
 void controlSphere(GLFWwindow* window, int key, int scancode, int action, int mods) {
