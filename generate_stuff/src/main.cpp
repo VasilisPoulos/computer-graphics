@@ -1,6 +1,7 @@
 ﻿#include "Object.h"
 #include "ShaderProgram.h"
 #include <list>
+#include "Camera.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/ext.hpp"
 
@@ -56,6 +57,8 @@ int main()
 	/*
 	 *	TEST Camera init.
 	 */
+	Camera camera;
+	camera = Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, -0.1f, 0.0f), 90.0f, 0.0f, 3.0f, 0.5f);
 	GLuint MatrixID = shaderProgram.getUniformLocation("MVP");
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 100.0f, 300.0f);
 	glm::mat4 View = glm::lookAt(
@@ -81,6 +84,7 @@ int main()
 		glfwSetKeyCallback(window, key_callback);
 
 		shaderProgram.bind();
+		//camera.keyControl();
 
 		/*
 		* The order we draw objects is VERY important. To render correctly
