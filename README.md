@@ -1,7 +1,5 @@
 # Computer graphics project
 
-![Suzi](examples/obj_import_test/obj_example.gif)
-
 First OpenGL programming exercice for the course Computer Graphics and Interactive Systems at the University of Ioannina.
 
 ## Main tasks

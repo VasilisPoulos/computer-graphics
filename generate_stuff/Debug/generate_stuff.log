@@ -1,2 +1,31 @@
-﻿  main.cpp
-  generate_stuff.vcxproj -> E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Debug\generate_stuff.exe
+﻿  Camera.cpp
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Camera.cpp(40,35): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Camera.cpp(49,35): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Camera.cpp(57,35): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Camera.cpp(63,35): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  main.cpp
+  Object.cpp
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Object.cpp(229,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Object.cpp(230,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Object.cpp(231,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\bill2\Desktop\computer-graphics\generate_stuff\src\Object.cpp(232,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  ShaderProgram.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  generate_stuff.vcxproj -> C:\Users\bill2\Desktop\computer-graphics\generate_stuff\Debug\generate_stuff.exe
