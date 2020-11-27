@@ -265,9 +265,10 @@ void Object::bounceObject(glm::vec3 direction) {
     modelMatrix = glm::translate(modelMatrix, direction);
 }
 
-void Object::detectCollision()
+void Object::detectCollision(glm::mat4 shpereMatrix)
 {
     glm::vec4 landingPosition = modelMatrix * glm::vec4(initialDirection, 1.0f);
+    //glm::vec4 shperePosition = shpereMatrix;
 
     if (landingPosition.y >= 100) {
         initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
@@ -287,8 +288,6 @@ void Object::detectCollision()
     else if (landingPosition.z <= 0) {
         initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
     }
-
-
 }
 
 GLuint Object::getVertexArrayID() {

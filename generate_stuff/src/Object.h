@@ -40,7 +40,7 @@ public:
 	void moveFrom(char* input);
 	void bounceObject(glm::vec3 direction);
 	void moveObject(glm::vec3& translation);
-	void detectColision();
+	void detectCollision(glm::mat4 shpereMatrix);
 	GLuint getVertexArrayID();
 
 private:

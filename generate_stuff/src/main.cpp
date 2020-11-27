@@ -16,8 +16,8 @@ int move_on_z = 250;
 
 // Target SPH sphere to enable/disable its texture.
 std::list<Object*> target;
-
 glm::vec3 sphereControl;
+float SPH_speed = 0.09;
 
 // List of spawned objects.
 std::list<Object> spawnObjects;
@@ -125,10 +125,9 @@ int main()
 			glUniform3f(color, it->color[0], it->color[1], it->color[2]);
 			glUniform1f(transparency, 1.0f);
 			it->bindVAO();
-			//it->moveFrom(glm::to_string(it->modelMatrix[3]).c_str());
 			MVP = Projection * View * it->modelMatrix;
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-			it->detectCollision();
+			it->detectCollision(SPH_sphere.modelMatrix);
 			it->bounceObject(it->initialDirection);
 			glDrawArrays(GL_TRIANGLES, 0, it->m_vertices.size());
 			it->unbindVAO();
@@ -265,22 +264,22 @@ void genObject() {
 
 void controlSphere(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
-		sphereControl = glm::vec3(-1.0f, 0.0f, 0.0f);
+		sphereControl = glm::vec3(-1.0f, 0.0f, 0.0f) * SPH_speed;
 	}
 	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-		sphereControl = glm::vec3(1.0f, 0.0f, 0.0f);
+		sphereControl = glm::vec3(1.0f, 0.0f, 0.0f) * SPH_speed;
 	}
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-		sphereControl = glm::vec3(0.0f, -1.0f, 0.0f);
+		sphereControl = glm::vec3(0.0f, -1.0f, 0.0f) * SPH_speed;
 	}
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-		sphereControl = glm::vec3(0.0f, 1.0f, 0.0f);
+		sphereControl = glm::vec3(0.0f, 1.0f, 0.0f) * SPH_speed;
 	}
 	if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS) {
-		sphereControl = glm::vec3(0.0f, 0.0f, +1.0f);
+		sphereControl = glm::vec3(0.0f, 0.0f, +1.0f) * SPH_speed;
 	}
 	if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS) {
-		sphereControl = glm::vec3(0.0f, 0.0f, -1.0f);
+		sphereControl = glm::vec3(0.0f, 0.0f, -1.0f) * SPH_speed;
 	}
 	return;
 }
