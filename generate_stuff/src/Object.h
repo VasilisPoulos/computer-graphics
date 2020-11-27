@@ -24,15 +24,13 @@ public:
 	std::vector<glm::vec2> m_uvs;
 	std::vector<glm::vec3> m_normals;
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	glm::vec3 initialDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	// Texture and color.
 	glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f); // Default color red
 	unsigned int texture;
 	bool enableTexture = false;
-
-	// Opengl IDs 
-	// TODO: duplication? (similar names)
-	
+	bool isSpawnable = false;
 
 	void loadTexture(const char* path);
 	void switchTexture();
@@ -40,9 +38,9 @@ public:
 	void unbindVAO();
 	void randomRGB();
 	void moveFrom(char* input);
-
+	void bounceObject(glm::vec3 direction);
 	void moveObject(glm::vec3& translation);
-
+	void detectColision();
 	GLuint getVertexArrayID();
 
 private:

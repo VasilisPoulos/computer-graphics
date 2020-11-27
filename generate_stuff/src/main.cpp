@@ -78,7 +78,7 @@ int main()
 	GLuint textureFlag = shaderProgram.getUniformLocation("textureFlag");
 	GLuint color = shaderProgram.getUniformLocation("set_color");
 	GLuint transparency = shaderProgram.getUniformLocation("transparency");
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -128,6 +128,8 @@ int main()
 			//it->moveFrom(glm::to_string(it->modelMatrix[3]).c_str());
 			MVP = Projection * View * it->modelMatrix;
 			glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+			it->detectCollision();
+			it->bounceObject(it->initialDirection);
 			glDrawArrays(GL_TRIANGLES, 0, it->m_vertices.size());
 			it->unbindVAO();
 		}
@@ -243,14 +245,15 @@ void genObject() {
 	/* Objects spawn in (0, 0, 0) this is true without the next line but
 	 * it is kept form compehensiveness.
 	 */
-	
-	float v_x = randomFloat(0.1, 0.9);
-	float v_y = randomFloat(0.1, 0.9);
-	float v_z = randomFloat(0.1, 0.9);
+	float speed = 0.04;
+	float v_x = randomFloat(0.1, 0.9) * speed;
+	float v_y = randomFloat(0.1, 0.9) * speed;
+	float v_z = randomFloat(0.1, 0.9) * speed;
 
 	glm::vec3 direction_v = glm::vec3(v_x, v_y, v_z);
 	glm::vec3 translate(0.0f, 0.0f, 0.0f);
 	spawnable.moveObject(translate);
+	spawnable.initialDirection = direction_v;
 	spawnObjects.push_back(spawnable);
 
 	//std::cout << "44444444>"<<glm::to_string(spawnable.modelMatrix[3]) << std::endl;

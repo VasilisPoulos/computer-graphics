@@ -261,6 +261,36 @@ void Object::moveObject(glm::vec3& translation) {
     translation = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
+void Object::bounceObject(glm::vec3 direction) {
+    modelMatrix = glm::translate(modelMatrix, direction);
+}
+
+void Object::detectCollision()
+{
+    glm::vec4 landingPosition = modelMatrix * glm::vec4(initialDirection, 1.0f);
+
+    if (landingPosition.y >= 100) {
+        initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
+    }
+    else if (landingPosition.y <= 0) {
+        initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
+    }
+    else if (landingPosition.x >= 100) {
+        initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
+    }
+    else if (landingPosition.x <= 0) {
+        initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
+    }
+    else if (landingPosition.z >= 100) {
+        initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
+    }
+    else if (landingPosition.z <= 0) {
+        initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
+    }
+
+
+}
+
 GLuint Object::getVertexArrayID() {
     return vertexArrayID;
 }
