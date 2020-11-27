@@ -95,14 +95,17 @@ int main()
 
 		// 1. Draw textured sphere SPH(opaque).
 		SPH_sphere.bindVAO();
-		glUniform3f(color, SPH_sphere.color[0], SPH_sphere.color[1], SPH_sphere.color[2]);
-		glUniform4f(textureFlag, 1.0f, 1.0f, 1.0f, 1.0f);
 		glUniform1f(transparency, 1.0f);
 		// TODO: built this if into a funcition?
 		if (SPH_sphere.enableTexture)
 		{
+			glUniform4f(textureFlag, 1.0f, 1.0f, 1.0f, 1.0f);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, SPH_sphere.texture);
+		}
+		else {
+			glUniform4f(textureFlag, 0.0f, 0.0f, 0.0f, 0.0f);
+			glUniform3f(color, SPH_sphere.color[0], SPH_sphere.color[1], SPH_sphere.color[2]);
 		}
 		SPH_sphere.moveObject(sphereControl);
 		MVP = Projection * View * SPH_sphere.modelMatrix;
@@ -217,10 +220,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-		genObject();
-		
+		genObject();	
 	}
-
 	controlSphere(window, key, scancode, action, mods);
 }
 
