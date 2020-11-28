@@ -1,46 +1,15 @@
 ﻿#include "Application.h"
 #define GLM_ENABLE_EXPERIMENTAL
 
-// Window Settings.
-const unsigned int SCR_WIDTH  = 600;
-const unsigned int SCR_HEIGHT = 600;
-
-// TEST Camera init positions.
-int move_on_x = 50;
-int move_on_y = 50;
-int move_on_z = 250;
-
-// Target SPH sphere to enable/disable its texture.
-std::list<Object*> target;
-glm::vec3 sphereControl;
-float SPH_speed = 0.09;
-
-// List of spawned objects.
-std::list<Object> spawnObjects;
-std::list<Object>::iterator it;
-
-GLFWwindow* m_window;
-Object m_SPH;
-Object m_SC;
-
-GLFWwindow* InitWindow();
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void controlSphere(GLFWwindow* window, int key, int scancode, int action, int mods);
-void genObject();
-
-
-void drawSceneCube(Object& SC_cube, ShaderProgram& shaderProgram);
-void drawTestCube(Object& TEST_cube_2, ShaderProgram& shaderProgram);
-void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram);
-
-void initSPH(Object& SPH_sphere);
-void initSC(Object& SC_cube);
-
-int start();
-
-int main(void) 
+int main(void)
 {
+	initMembers();
+	startDisplaying();
+	return 0;
+}
+
+// Constructor
+void initMembers() {
 	m_window = InitWindow();
 	Object SC(TYPE_CUBE);
 	initSC(SC);
@@ -49,19 +18,13 @@ int main(void)
 	Object SPH_sphere(TYPE_SPHERE);
 	initSPH(SPH_sphere);
 	m_SPH = SPH_sphere;
-	start();
-}
 
-int start()
-{
-	ShaderProgram m_shader;
-	
-	// Test cube for debuging.
-	Object TEST_cube_2(TYPE_CUBE);
+	ShaderProgram shader("./res/shaders/Final.shader");
+	m_shader = shader;
 
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 100.0f, 300.0f);
 	m_shader.setUniform4fv("proj_matrix", 1, GL_FALSE, glm::value_ptr(Projection));
-	
+
 	glm::mat4 View = glm::lookAt(
 		glm::vec3(move_on_x, move_on_y, move_on_z), // Camera is at (4,3,3), in World Space
 		glm::vec3(50, 50, 50),						// and looks at the origin
@@ -69,65 +32,8 @@ int start()
 	);
 
 	m_shader.setUniform4fv("view_matrix", 1, GL_FALSE, glm::value_ptr(View));
-
-	/*
-	 *	Uniform locations.
-	 *	textureFlag  (vec4)	= enables/disables the texture of the object, if there
-	 *						  is one.
-	 *	set_color	 (vec3) = the color that an object should have when drawn.
-	 *	transparency (vec1)	= the level of an objects transparency
-	 */
-	
-	while (!glfwWindowShouldClose(m_window))
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_shader.bind();
-		//camera.keyControl();
-
-		/*
-		* The order we draw objects is VERY important. To render correctly
-		* transparent primitives against transparent primitives, you can't rely
-		* on the z-buffer, you have to depth-sort your geometry or use a
-		* depth-independant rendering technique.
-		*
-		* In our case we are rendering all opaque objects in the scene (letting
-		* the z-buffer figure out what's visible) and then render all transparent
-		* objects from back to front.
-		*/
-
-		// 1. Draw textured sphere SPH(opaque).
-		drawSPH(m_SPH, m_shader);
-
-		// 2. Spawn items (opaque).
-		for (it = spawnObjects.begin(); it != spawnObjects.end(); ++it) {
-			m_shader.setUniform4f("textureFlag", 0.0f, 0.0f, 0.0f, 0.0f);
-			m_shader.setUniform3f("set_color", it->color[0], it->color[1], it->color[2]);
-			m_shader.setUniform1f("transparency", 1.0f);
-			it->bindVAO();
-			m_shader.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(it->modelMatrix));
-			it->detectCollision(m_SPH.modelMatrix);
-			it->bounceObject(it->initialDirection);
-			glDrawArrays(GL_TRIANGLES, 0, it->m_vertices.size());
-			it->unbindVAO();
-		}
-
-		// 3. Draw cube behind cube to TEST transparency (back-transparent).
-		drawTestCube(TEST_cube_2, m_shader);
-		
-		// 4. Draw cube (front-transparent).
-		drawSceneCube(m_SC, m_shader);
-		
-
-		glfwSwapBuffers(m_window);
-		glfwPollEvents();
-	}
-	// Cleanup. 
-
-	glfwTerminate();
-	return 0;
 }
 
-// Method implementations.
 GLFWwindow* InitWindow()
 {
 	// GLFW Init.
@@ -175,6 +81,43 @@ GLFWwindow* InitWindow()
 
 	glfwSetKeyCallback(window, key_callback);
 	return window;
+}
+
+void startDisplaying()
+{
+	/*
+	 *	Uniform locations.
+	 *	textureFlag  (vec4)	= enables/disables the texture of the object, if there
+	 *						  is one.
+	 *	set_color	 (vec3) = the color that an object should have when drawn.
+	 *	transparency (vec1)	= the level of an objects transparency
+	 */
+	
+	while (!glfwWindowShouldClose(m_window))
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		m_shader.bind();
+
+		// updateCamera();
+		/*
+		* The order we draw objects is VERY important. To render correctly
+		* transparent primitives against transparent primitives, you can't rely
+		* on the z-buffer, you have to depth-sort your geometry or use a
+		* depth-independant rendering technique.
+		*
+		* In our case we are rendering all opaque objects in the scene (letting
+		* the z-buffer figure out what's visible) and then render all transparent
+		* objects from back to front.
+		*/
+
+		drawScene();
+
+		glfwSwapBuffers(m_window);
+		glfwPollEvents();
+	}
+	// Cleanup. 
+
+	glfwTerminate();
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -268,6 +211,30 @@ void initSPH(Object& SPH_sphere)
 	SPH_sphere.loadTexture("./res/textures/normal.jpg");
 }
 
+void drawScene() {
+	// 1. Draw textured sphere SPH(opaque).
+	drawSPH(m_SPH, m_shader);
+
+	// 2. Spawn items (opaque).
+	for (it = spawnObjects.begin(); it != spawnObjects.end(); ++it) {
+		// Set up
+		m_shader.setUniform4f("textureFlag", 0.0f, 0.0f, 0.0f, 0.0f);
+		m_shader.setUniform3f("set_color", it->color[0], it->color[1], it->color[2]);
+		m_shader.setUniform1f("transparency", 1.0f);
+
+		// Draw
+		it->bindVAO();
+		m_shader.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(it->modelMatrix));
+		it->detectCollision(m_SPH.modelMatrix);
+		it->bounceObject(it->initialDirection);
+		glDrawArrays(GL_TRIANGLES, 0, it->m_vertices.size());
+		it->unbindVAO();
+	}
+
+	// 4. Draw cube (front-transparent).
+	drawSceneCube(m_SC, m_shader);
+}
+
 void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
 {
 	SPH_sphere.bindVAO();
@@ -290,17 +257,6 @@ void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
 	glDrawArrays(GL_TRIANGLES, 0, SPH_sphere.m_vertices.size());
 	glBindTexture(GL_TEXTURE_2D, 0);
 	SPH_sphere.unbindVAO();
-}
-
-void drawTestCube(Object& TEST_cube_2, ShaderProgram& shaderProgram)
-{
-	shaderProgram.setUniform4f("textureFlag", 0.0f, 0.0f, 0.0f, 0.0f);
-	shaderProgram.setUniform3f("set_color", TEST_cube_2.color[0], TEST_cube_2.color[1], TEST_cube_2.color[2]);
-	shaderProgram.setUniform1f("transparency", 0.1f);
-	TEST_cube_2.bindVAO();
-	shaderProgram.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(TEST_cube_2.modelMatrix));
-	glDrawArrays(GL_TRIANGLES, 0, TEST_cube_2.m_vertices.size());
-	TEST_cube_2.unbindVAO();
 }
 
 void drawSceneCube(Object& SC_cube, ShaderProgram& shaderProgram)

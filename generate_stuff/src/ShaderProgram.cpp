@@ -1,8 +1,10 @@
 #include "ShaderProgram.h"
 
-ShaderProgram::ShaderProgram(): m_ProgramID(0)
+ShaderProgram::ShaderProgram() {}
+
+ShaderProgram::ShaderProgram(const std::string& filepath): m_ProgramID(0)
 {
-	ShaderProgramSource source = parseShaders(shaderPath); // Change the path to the wanted shader
+	ShaderProgramSource source = parseShaders(filepath); // Change the path to the wanted shader
 	m_ProgramID = createShaders(source.VertexShaderSource, source.FragmentShaderSource);
 	bind();
 }

@@ -17,7 +17,7 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 }
 
 
-void Camera::keyControl(bool* keys, GLfloat deltaTime,GLfloat xChange,GLfloat yChange)
+void Camera::keyControl(bool* keys, GLfloat deltaTime, GLfloat xChange, GLfloat yChange)
 {
 	GLfloat velocity = moveSpeed * deltaTime;
 
@@ -30,7 +30,6 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime,GLfloat xChange,GLfloat yC
 	{
 		position -= front * velocity; // Zoom out
 	}
-
 
 	// Rotate around y axis
 	if (keys[GLFW_KEY_A])
@@ -64,7 +63,6 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime,GLfloat xChange,GLfloat yC
 	}
 	
 }
-
 
 glm::mat4 Camera::calculateViewMatrix()
 {

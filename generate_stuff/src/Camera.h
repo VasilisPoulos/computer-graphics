@@ -17,8 +17,6 @@ public:
 
 	void keyControl(bool* keys, GLfloat deltaTime, GLfloat xChange, GLfloat yChange);
 
-	void mouseControl(GLfloat xChange, GLfloat yChange);
-
 	glm::mat4 calculateViewMatrix(char x);
 
 	glm::mat4 calculateViewMatrix();

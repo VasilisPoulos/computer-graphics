@@ -17,6 +17,7 @@ class ShaderProgram
 {
 public:
 	ShaderProgram();
+	ShaderProgram(const std::string& filepath);
 	~ShaderProgram();
 
 	void bind()	const { glUseProgram(m_ProgramID); }
