@@ -5,6 +5,7 @@
 #include "glm/ext.hpp"
 #include <list>
 
+
 float randomFloat(float a, float b);
 // Window Settings.
 const unsigned int SCR_WIDTH = 600;
@@ -42,6 +43,7 @@ void drawScene();
 void drawSceneCube(Object& SC_cube, ShaderProgram& shaderProgram);
 void drawTestCube(Object& TEST_cube_2, ShaderProgram& shaderProgram);
 void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram);
+void accelerateSpawnables(float acceleration_value);
 
 void initSPH(Object& SPH_sphere);
 void initSC(Object& SC_cube);

@@ -1,5 +1,6 @@
 ﻿#include "Application.h"
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
 
 int main(void)
 {
@@ -138,8 +139,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		genObject();	
 	}
+	else if (key == GLFW_KEY_COMMA && action == GLFW_PRESS)
+	{
+		accelerateSpawnables(0.9);
+	}
+	else if (key == GLFW_KEY_PERIOD && action == GLFW_PRESS)
+	{
+		accelerateSpawnables(1.1);
+	}
 	controlSphere(window, key, scancode, action, mods);
 }
+
+void accelerateSpawnables(float acceleration_value)
+{
+	for (it = spawnObjects.begin(); it != spawnObjects.end(); ++it) {
+		it->initialDirection = it->initialDirection * acceleration_value;
+	}
+	std::cout << "$Main :: acceleration set to " << glm::to_string(spawnObjects.begin()->initialDirection) << "\n";
+} 
 
 void genObject() {
 	srand(time(NULL));
