@@ -1,7 +1,8 @@
 ﻿#include "Application.h"
+#include <glm/gtx/string_cast.hpp> 
 #define GLM_ENABLE_EXPERIMENTAL
 
-int main(void)
+int main( void )
 {
 	initMembers();
 	startDisplaying();
@@ -25,13 +26,26 @@ void initMembers() {
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 100.0f, 300.0f);
 	m_shader.setUniform4fv("proj_matrix", 1, GL_FALSE, glm::value_ptr(Projection));
 
+	initCamera();
+
+	/*
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(move_on_x, move_on_y, move_on_z), // Camera is at (4,3,3), in World Space
+		glm::vec3(50.0f, 50.0f, 50.0f), // Camera is at (4,3,3), in World Space
 		glm::vec3(50, 50, 50),						// and looks at the origin
 		glm::vec3(0, 1, 0)							// Head is up (set to 0,-1,0 to look upside-down)
 	);
+	*/
 
-	m_shader.setUniform4fv("view_matrix", 1, GL_FALSE, glm::value_ptr(View));
+	m_shader.setUniform4fv("view_matrix", 1, GL_FALSE, glm::value_ptr(m_camera.calculateViewMatrix()));
+}
+
+void initCamera()
+ {
+	glm::vec3 start_position (50, 50, 250);
+	glm::vec3 start_up (0.0f, 1.0f, 0.0f);
+
+	Camera camera(start_position, start_up, 0.0f, 0.0f, 10.0f);
+	m_camera = camera;
 }
 
 GLFWwindow* InitWindow()
@@ -48,7 +62,7 @@ GLFWwindow* InitWindow()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Untitled Window", NULL, NULL);
 	glfwSetWindowTitle(window, u8"Συγκρουόμενα");
 	if (window == NULL)
 	{
@@ -77,7 +91,7 @@ GLFWwindow* InitWindow()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.1f, 0.0f, 0.1f, 1.0f);
 
 	glfwSetKeyCallback(window, key_callback);
 	return window;
@@ -95,9 +109,21 @@ void startDisplaying()
 	
 	while (!glfwWindowShouldClose(m_window))
 	{
+		// per-frame time logic
+	   // --------------------
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		m_shader.bind();
 
+		GLfloat now = glfwGetTime();
+		deltaTime = now - lastFrame;
+		lastFrame = now;
+
+		glm::mat4 View = m_camera.calculateViewMatrix();
+		m_shader.setUniform4fv("view_matrix", 1, GL_FALSE, glm::value_ptr(View));
 		// updateCamera();
 		/*
 		* The order we draw objects is VERY important. To render correctly
@@ -139,6 +165,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		genObject();	
 	}
 	controlSphere(window, key, scancode, action, mods);
+	controlCamera(window, key, scancode, action, mods);
+	
 }
 
 void genObject() {
@@ -194,6 +222,56 @@ void controlSphere(GLFWwindow* window, int key, int scancode, int action, int mo
 	return;
 }
 
+void controlCamera(GLFWwindow* window, int key, int scancode, int action, int mods) 
+{
+	if (key == GLFW_KEY_E && action == GLFW_PRESS)
+	{
+		m_camera.zoomIn(deltaTime);
+	}
+
+	if (key == GLFW_KEY_X && action == GLFW_PRESS)
+	{
+		m_camera.zoomOut(deltaTime);
+	}
+
+	if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+		m_camera.rotateYPositive();
+	}
+	/*
+	if (keys[GLFW_KEY_A])
+	{
+		//position -= right * velocity;
+		const float radius = 10.0f;
+		position.x = cos(glfwGetTime()) * radius;
+		position.z = sin(glfwGetTime()) * radius;
+		//position.z = cos(glfwGetTime()) * radius;
+		//update();
+	}
+
+	if (keys[GLFW_KEY_D])
+	{
+		float radius = 10.0f;
+		//position.x = sin(glfwGetTime()) * radius;
+
+	}
+
+	// Rotate around y axis
+	if (keys[GLFW_KEY_E])
+	{
+		//position -= right * velocity;
+		const float radius = 10.0f;
+		position.y = sin(glfwGetTime()) * radius;
+	}
+
+	if (keys[GLFW_KEY_X])
+	{
+		float radius = 10.0f;
+		position.z = cos(glfwGetTime()) * radius;;
+	}
+	*/
+}
+
+
 void initSC(Object& SC_cube)
 {
 	SC_cube.modelMatrix = glm::translate(SC_cube.modelMatrix, glm::vec3(50.0f, 50.0f, 50.0f));
@@ -210,6 +288,7 @@ void initSPH(Object& SPH_sphere)
 	target.push_back(&SPH_sphere);
 	SPH_sphere.loadTexture("./res/textures/normal.jpg");
 }
+
 
 void drawScene() {
 	// 1. Draw textured sphere SPH(opaque).
@@ -247,7 +326,8 @@ void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, SPH_sphere.texture);
 	}
-	else {
+	else
+	{
 		shaderProgram.setUniform4f("textureFlag", 0.0f, 0.0f, 0.0f, 0.0f);
 		shaderProgram.setUniform3f("set_color", SPH_sphere.color[0], SPH_sphere.color[1], SPH_sphere.color[2]);
 	}

@@ -7,6 +7,9 @@
 #include <glm/gtc/matrix_transform.hpp>  
 #include <glm/gtx/transform.hpp>
 
+#include <stdio.h> 
+#include <string.h> 
+
 const int TYPE_SUZI = 0;
 const int TYPE_SPHERE = 1;
 const int TYPE_CILINDER = 2;

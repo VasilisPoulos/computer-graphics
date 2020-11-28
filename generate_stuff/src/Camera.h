@@ -5,23 +5,35 @@
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
-#include "glm\gtc\quaternion.hpp"                          //<-- to help us rotate things
+//#include "glm\gtc\quaternion.hpp"                          //<-- to help us rotate things
 
 #include <GLFW\glfw3.h>
+
+enum Camera_Movement {
+	FORWARD,
+	BACKWARD,
+	LEFT,
+	RIGHT
+};
 
 class Camera
 {
 public:
 	Camera();
-	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed);
+	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed);
 
-	void keyControl(bool* keys, GLfloat deltaTime, GLfloat xChange, GLfloat yChange);
+	void keyControl(bool* keys, GLfloat deltaTime);
 
 	glm::mat4 calculateViewMatrix(char x);
 
 	glm::mat4 calculateViewMatrix();
 
-	~Camera();
+	//~Camera();
+
+	void zoomIn(GLfloat deltaTime);
+	void zoomOut(GLfloat deltaTime);
+
+	void rotateYPositive();
 
 private:
 	glm::vec3 position;
@@ -34,7 +46,7 @@ private:
 	GLfloat pitch;
 
 	GLfloat moveSpeed;
-	GLfloat turnSpeed;
+	//glm::vec3 target(50.0f, 50.0f, 50.0f);
 
 	void update();
 };

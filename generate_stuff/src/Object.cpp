@@ -2,8 +2,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #pragma warning(disable : 4996)
-#include <stdio.h> 
-#include <string.h> 
+
 
 Object::Object(){}
 
