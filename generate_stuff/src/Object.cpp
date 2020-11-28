@@ -5,6 +5,7 @@
 #include <stdio.h> 
 #include <string.h> 
 
+Object::Object(){}
 
 Object::Object(int objectId)
 {

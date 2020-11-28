@@ -103,19 +103,30 @@ GLuint ShaderProgram::compileShader(GLuint shaderType, const std::string& shader
 	return shaderID;
 }
 
-
 ShaderProgram::~ShaderProgram()
 {
 	glDeleteProgram(m_ProgramID);
 }
 
-// Set Color uniform
+
+// Set Uniforms Section
+void ShaderProgram::setUniform1f(const std::string& uniform, GLfloat v0) {
+	glUniform1f(getUniformLocation(uniform), v0);
+}
+
+void ShaderProgram::setUniform2f(const std::string& uniform, GLfloat v0, GLfloat v1) {
+	glUniform2f(getUniformLocation(uniform), v0, v1);
+}
+
+void ShaderProgram::setUniform3f(const std::string& uniform, GLfloat v0, GLfloat v1, GLfloat v2) {
+	glUniform3f(getUniformLocation(uniform), v0, v1, v2);
+}
+
 void ShaderProgram::setUniform4f(const std::string& uniform, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
 {
 	glUniform4f(getUniformLocation(uniform), v0, v1, v2, v3);
 }
 
-// Set Matrix Uniform
 void ShaderProgram::setUniform4fv(const std::string& uniform, GLsizei count, GLboolean transpose, const GLfloat* value) {
 	glUniformMatrix4fv(getUniformLocation(uniform), count, transpose, value);
 }

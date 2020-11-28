@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
+#include "Utilities.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>  
 #include <glm/gtx/transform.hpp>
@@ -15,6 +15,7 @@ class Object
 {
 public:
 	//TODO: Make some private, clean up
+	Object();
 	Object(int objectId);
 	//~Object();
 	const char* objectPath;

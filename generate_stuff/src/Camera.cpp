@@ -82,5 +82,4 @@ void Camera::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
-Camera::~Camera()
-{}
+Camera::~Camera(){}
