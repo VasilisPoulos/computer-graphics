@@ -228,9 +228,10 @@ void Object::switchTexture()
 void Object::randomRGB()
 {
     srand(time(NULL));
-    float r = ((double)rand() / (RAND_MAX));
-    float g = ((double)rand() / (RAND_MAX));
-    float b = ((double)rand() / (RAND_MAX));
+    int brightness = 160;
+    float r = (rand() % 255 + brightness) / 255.0f;
+    float g = (rand() % 255 + brightness) / 255.0f;
+    float b = (rand() % 255 + brightness) / 255.0f;
     std::cout << "$Obj :: RGB value set to: " << r << " " << g << " " << b << "\n";
     color = glm::vec3(r, g, b);
 }
