@@ -29,6 +29,7 @@ std::list<Object>::iterator it;
 GLFWwindow* m_window;
 Object m_SPH;
 Object m_SC;
+Object m_test;
 ShaderProgram m_shader;
 Camera m_camera;
 
@@ -57,3 +58,7 @@ void initCamera();
 void startDisplaying();
 
 void initMembers();
+
+//	REMOVE USED FOR DEBUGGING
+void initTestCube(Object& TEST_cube);
+void drawTestCube(Object& TEST_cube, ShaderProgram& shaderProgram);

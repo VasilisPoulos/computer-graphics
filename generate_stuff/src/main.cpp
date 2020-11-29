@@ -20,9 +20,13 @@ void initMembers() {
 	initSPH(SPH_sphere);
 	m_SPH = SPH_sphere;
 
+	// REMOVE
+	Object Test_cube(TYPE_CUBE);
+	initTestCube(Test_cube);
+	m_test = Test_cube;
+
 	initCamera();
 	
-
 	ShaderProgram shader("./res/shaders/Final.shader");
 	m_shader = shader;
 
@@ -304,6 +308,7 @@ void drawScene() {
 	}
 
 	glDisable(GL_DEPTH_TEST);
+	//drawTestCube(m_test, m_shader);
 	// 4. Draw cube (front-transparent).
 	drawSceneCube(m_SC, m_shader);
 	glEnable(GL_DEPTH_TEST);
@@ -342,4 +347,20 @@ void drawSceneCube(Object& SC_cube, ShaderProgram& shaderProgram)
 	glDrawArrays(GL_TRIANGLES, 0, SC_cube.m_vertices.size());
 	SC_cube.unbindVAO();
 
+}
+
+void initTestCube(Object& TEST_cube)
+{
+	TEST_cube.modelMatrix = glm::translate(TEST_cube.modelMatrix, glm::vec3(50.0f, 50.0f, 50.0f));
+	TEST_cube.modelMatrix = glm::scale(TEST_cube.modelMatrix, glm::vec3(15.0f, 15.0f, 15.0f));
+}
+
+void drawTestCube(Object& TEST_cube, ShaderProgram& shaderProgram)
+{
+	TEST_cube.bindVAO();
+	shaderProgram.setUniform1f("transparency", 0.2f);
+	shaderProgram.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(TEST_cube.modelMatrix));
+	glDrawArrays(GL_TRIANGLES, 0, TEST_cube.m_vertices.size());
+	glBindTexture(GL_TEXTURE_2D, 0);
+	TEST_cube.unbindVAO();
 }

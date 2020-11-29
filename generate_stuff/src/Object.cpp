@@ -272,7 +272,6 @@ void Object::detectCollision(glm::mat4 shpereMatrix)
 {
 
     glm::vec4 landingPosition = modelMatrix * glm::vec4(initialDirection, 1.0f);
-    //glm::vec4 shperePosition = shpereMatrix;
     glm::vec4 shperePosition = shpereMatrix * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 
@@ -301,26 +300,17 @@ void Object::detectCollision(glm::mat4 shpereMatrix)
         return;
     }
 
+    // if inside SPH hitbox
     if (landingPosition.x <= shperePosition.x + 15 && landingPosition.x >= shperePosition.x - 15 &&
         landingPosition.y <= shperePosition.y + 15 && landingPosition.y >= shperePosition.y - 15 &&
         landingPosition.z <= shperePosition.z + 15 && landingPosition.z >= shperePosition.z - 15)
     {
 
-        if (landingPosition.x >= shperePosition.x - 15 || landingPosition.x <= shperePosition.x + 15) {
-            initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
-            //std::cout << "RE BROOO x";
-            return;
-        }
-        else  if (landingPosition.y >= shperePosition.y - 15 || landingPosition.y <= shperePosition.y + 15) {
-            initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
-            //std::cout << "RE BROOO y";
-            return;
-        }
-        else  if (landingPosition.z >= shperePosition.z - 15 || landingPosition.z <= shperePosition.z + 15) {
-            initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
-            //std::cout << "RE BROOO z";
-            return;
-        }
+        std::cout << "inside cube \n";
+    }
+    else
+    {
+        std::cout << "OUT cube \n";
     }
 }
 
