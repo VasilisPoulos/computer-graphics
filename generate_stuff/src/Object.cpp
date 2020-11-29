@@ -216,6 +216,7 @@ void Object::loadTexture(const char* path) {
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    std::cout << "$Obj :: loaded texture " << path << "\n";
 }
 
 // Used on keycallback to enable/disable texture
