@@ -218,29 +218,32 @@ void accelerateSpawnables(float acceleration_value)
 } 
 
 void genObject() {
+	// Objects spawn in (0, 0, 0) 
 	srand(time(NULL));
+
 	int randomType = rand() % 3 + 1;
 	Object spawnable(randomType);
-	spawnable.randomRGB();
+	
+	spawnable.randomRGB(0);
 
-	/* Objects spawn in (0, 0, 0) this is true without the next line but
-	 * it is kept form compehensiveness.
-	 */
-	float speed = 0.5f;
+	float speed = 0.09f;
 	float v_x = randomFloat(0.1, 0.9) * speed;
 	float v_y = randomFloat(0.1, 0.9) * speed;
 	float v_z = randomFloat(0.1, 0.9) * speed;
-
 	glm::vec3 direction_v = glm::vec3(v_x, v_y, v_z);
-	glm::vec3 translate(0.0f, 0.0f, 0.0f);
-	spawnable.moveObject(translate);
 	spawnable.initialDirection = direction_v;
+
+	float size = randomFloat(1, 5);
+
+	spawnable.modelMatrix = glm::scale(spawnable.modelMatrix, glm::vec3(size, size, size));
+	
 	spawnObjects.push_back(spawnable);
 
-	//std::cout << "44444444>"<<glm::to_string(spawnable.modelMatrix[3]) << std::endl;
-	//std::cout << glm::to_string(spawnable.modelMatrix.m33) << std::endl;
-	std::cout << "$Main :: Generating object of type " << randomType << " VAO ID -> " << spawnable.getVertexArrayID() << "\n";
-	std::cout << "$Main :: Object type " << randomType << " ID: " << spawnable.getVertexArrayID() << " speed is (" <<
+	// Debbug output
+	std::cout << "$Main :: Generating object of type " << randomType << 
+		" VAO ID -> " << spawnable.getVertexArrayID() << "\n";
+	std::cout << "$Main :: Object type " << randomType << " ID: " << 
+		spawnable.getVertexArrayID() << " speed is (" <<
 		v_x << ", " << v_y << ", " << v_z << ")\n";
 }
 
@@ -275,7 +278,7 @@ void initSC(Object& SC_cube)
 	SC_cube.modelMatrix = glm::translate(SC_cube.modelMatrix, glm::vec3(50.0f, 50.0f, 50.0f));
 	SC_cube.modelMatrix = glm::scale(SC_cube.modelMatrix, glm::vec3(50.0f, 50.0f, 50.0f));
 
-	SC_cube.randomRGB();
+	SC_cube.randomRGB(150);
 }
 
 void initSPH(Object& SPH_sphere)

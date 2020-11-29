@@ -226,37 +226,14 @@ void Object::switchTexture()
     std::cout << "$Obj :: EnableTexture set to: " << enableTexture << "\n";
 }
 
-void Object::randomRGB()
+void Object::randomRGB(int brightness)
 {
     srand(time(NULL));
-    int brightness = 160;
     float r = (rand() % 255 + brightness) / 255.0f;
     float g = (rand() % 255 + brightness) / 255.0f;
     float b = (rand() % 255 + brightness) / 255.0f;
     std::cout << "$Obj :: RGB value set to: " << r << " " << g << " " << b << "\n";
     color = glm::vec3(r, g, b);
-}
-
-void Object::moveFrom(char* input)
-{   
-    // Returns first token  
-    char* token = strtok(input, ",");
-
-    // Keep printing tokens while one of the 
-    // delimiters present in str[]. 
-    while (token != NULL)
-    {
-        printf("%s\n", token);
-        token = strtok(NULL, ",");
-    }
-    std::cout << token[1];
-    //x = 0, y = 0;
-    //if (z > 10) {
-    //    z -= 0.1;
-    //}else if (z < -10){
-    //    z += 0.1;
-    //}
-    //modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
 }
 
 void Object::moveObject(glm::vec3& translation) {
@@ -306,11 +283,7 @@ void Object::detectCollision(glm::mat4 shpereMatrix)
         landingPosition.z <= shperePosition.z + 15 && landingPosition.z >= shperePosition.z - 15)
     {
 
-        std::cout << "inside cube \n";
-    }
-    else
-    {
-        std::cout << "OUT cube \n";
+        //std::cout << "inside cube \n";
     }
 }
 

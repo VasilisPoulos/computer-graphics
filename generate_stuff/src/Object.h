@@ -38,8 +38,7 @@ public:
 	void switchTexture();
 	void bindVAO();
 	void unbindVAO();
-	void randomRGB();
-	void moveFrom(char* input);
+	void randomRGB(int brightness);
 	void bounceObject(glm::vec3 direction);
 	void moveObject(glm::vec3& translation);
 	void detectCollision(glm::mat4 shpereMatrix);
