@@ -303,8 +303,10 @@ void drawScene() {
 		it->unbindVAO();
 	}
 
+	glDisable(GL_DEPTH_TEST);
 	// 4. Draw cube (front-transparent).
 	drawSceneCube(m_SC, m_shader);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
