@@ -131,9 +131,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_T && action == GLFW_PRESS)
 	{
-		m_SPH.enableTexture = !m_SPH.enableTexture;
-		// The next line broke on the main refactor
-		//target.front()->switchTexture();
+		m_SPH.switchTexture();
 	}
 	else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
