@@ -20,11 +20,15 @@ void initMembers() {
 	initSPH(SPH_sphere);
 	m_SPH = SPH_sphere;
 
+	initCamera();
+	
+
 	ShaderProgram shader("./res/shaders/Final.shader");
 	m_shader = shader;
 
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 100.0f, 300.0f);
 	m_shader.setUniform4fv("proj_matrix", 1, GL_FALSE, glm::value_ptr(Projection));
+
 
 	glm::mat4 View = glm::lookAt(
 		glm::vec3(move_on_x, move_on_y, move_on_z), // Camera is at (4,3,3), in World Space
@@ -33,6 +37,14 @@ void initMembers() {
 	);
 
 	m_shader.setUniform4fv("view_matrix", 1, GL_FALSE, glm::value_ptr(View));
+}
+
+void initCamera() {
+	glm::vec3 start_position(50.0f, 50.0f, 250.0f);
+	glm::vec3 start_up(0.0f, -1.0f, 0.0f);
+	Camera camera(start_position, start_up, 0.1f);
+
+	m_camera = camera;
 }
 
 GLFWwindow* InitWindow()
@@ -99,6 +111,8 @@ void startDisplaying()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		m_shader.bind();
 
+		updateCamera();
+
 		// updateCamera();
 		/*
 		* The order we draw objects is VERY important. To render correctly
@@ -119,6 +133,15 @@ void startDisplaying()
 	// Cleanup. 
 
 	glfwTerminate();
+}
+
+void updateCamera() 
+{
+	GLfloat now = glfwGetTime();
+	deltaTime = now - lastFrame;
+	lastFrame = now;
+
+	m_shader.setUniform4fv("view_matrix", 1, GL_FALSE, glm::value_ptr(m_camera.calculateViewMatrix()));
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -148,6 +171,40 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		accelerateSpawnables(1.1);
 	}
 	controlSphere(window, key, scancode, action, mods);
+	controlCamera(window, key, scancode, action, mods);
+}
+
+void controlCamera(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_E && action == GLFW_PRESS) 
+	{
+		m_camera.zoomIn(deltaTime);
+	}
+
+	else if (key == GLFW_KEY_X && action == GLFW_PRESS)
+	{
+		m_camera.zoomOut(deltaTime);
+	}
+
+	else if (key == GLFW_KEY_A && action == GLFW_PRESS)
+	{
+		m_camera.rotateYPositive();
+	}
+	else if (key == GLFW_KEY_D && action == GLFW_PRESS)
+	{
+		m_camera.rotateYNegative();
+	}
+
+	else if (key == GLFW_KEY_W && action == GLFW_PRESS)
+	{
+		m_camera.rotateXPositive();
+	}
+
+	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
+	{
+		m_camera.rotateXNegative();
+	}
+
 }
 
 void accelerateSpawnables(float acceleration_value)

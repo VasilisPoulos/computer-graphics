@@ -30,11 +30,16 @@ GLFWwindow* m_window;
 Object m_SPH;
 Object m_SC;
 ShaderProgram m_shader;
+Camera m_camera;
+
+GLfloat deltaTime = 0;
+GLfloat lastFrame = 0;
 
 GLFWwindow* InitWindow();
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void controlSphere(GLFWwindow* window, int key, int scancode, int action, int mods);
+void controlCamera(GLFWwindow* window, int key, int scancode, int action, int mods);
 void genObject();
 
 void updateCamera();
@@ -47,6 +52,7 @@ void accelerateSpawnables(float acceleration_value);
 
 void initSPH(Object& SPH_sphere);
 void initSC(Object& SC_cube);
+void initCamera();
 
 void startDisplaying();
 

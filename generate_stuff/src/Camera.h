@@ -13,15 +13,18 @@ class Camera
 {
 public:
 	Camera();
-	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed);
+	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startMoveSpeed);
 
-	void keyControl(bool* keys, GLfloat deltaTime, GLfloat xChange, GLfloat yChange);
-
-	glm::mat4 calculateViewMatrix(char x);
+	void zoomIn(GLfloat deltaTime);
+	void zoomOut(GLfloat deltaTime);
+	void rotateYPositive();
+	void rotateYNegative();
+	void rotateXPositive();
+	void rotateXNegative();
 
 	glm::mat4 calculateViewMatrix();
 
-	~Camera();
+	//~Camera();
 
 private:
 	glm::vec3 position;

@@ -1,8 +1,10 @@
 ﻿  main.cpp
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\Application.h(21,23): warning C4305: 'initializing': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(145,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(154,34): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(155,34): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(156,34): warning C4305: 'argument': truncation from 'double' to 'float'
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\Application.h(22,23): warning C4305: 'initializing': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(140,14): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(167,27): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(171,27): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(219,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(228,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(229,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(230,34): warning C4305: 'argument': truncation from 'double' to 'float'
   generate_stuff.vcxproj -> E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Debug\generate_stuff.exe

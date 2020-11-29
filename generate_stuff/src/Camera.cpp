@@ -1,83 +1,61 @@
 #include "Camera.h"
+#include <iostream>
+#include "glm/gtc/quaternion.hpp" // Help us rotate things
 
 Camera::Camera() {}
 
-Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed)
+Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startMoveSpeed)
 {
 	position = startPosition;
 	worldUp = startUp;
-	yaw = startYaw;
-	pitch = startPitch;
-	front = glm::vec3(0.0f, 0.0f, -1.0f);
-
 	moveSpeed = startMoveSpeed;
-	turnSpeed = startTurnSpeed;
-
-	update();
 }
 
-
-void Camera::keyControl(bool* keys, GLfloat deltaTime, GLfloat xChange, GLfloat yChange)
+// W
+void Camera::zoomIn(GLfloat deltaTime)
 {
-	GLfloat velocity = moveSpeed * deltaTime;
+	position -= position * 0.1f;
+}
 
-	if (keys[GLFW_KEY_W])
-	{
-		position += front * velocity; // Zoom in
-	}
+// S
+void Camera::zoomOut(GLfloat deltaTime)
+{
+	//position -= front * 10.5f; // Zoom out
+	position += position * 0.1f;
+}
 
-	if (keys[GLFW_KEY_S])
-	{
-		position -= front * velocity; // Zoom out
-	}
+// D
+void Camera::rotateYPositive()
+{
+	glm::quat q = glm::angleAxis(.10f, glm::vec3(0, 1, 0));
+	position = q * position;
+}
 
-	// Rotate around y axis
-	if (keys[GLFW_KEY_A])
-	{
-		//position -= right * velocity;
-		const float radius = 10.0f;
-		position.x = cos(glfwGetTime()) * radius;
-		//position.z = cos(glfwGetTime()) * radius;
-		//update();
-	}
+// A
+void Camera::rotateYNegative()
+{
+	glm::quat q = glm::angleAxis(-.10f, glm::vec3(0, 1, 0));
+	position = q * position;
+}
 
-	if (keys[GLFW_KEY_D])
-	{
-		float radius = 10.0f;
-		//position.x = sin(glfwGetTime()) * radius;
-		position.z = sin(glfwGetTime()) * radius;
-	}
+// E
+void Camera::rotateXPositive()
+{
+	glm::quat q = glm::angleAxis(.10f, glm::vec3(1, 0, 0));
+	position = q * position;
+}
 
-	// Rotate around y axis
-	if (keys[GLFW_KEY_E])
-	{
-		//position -= right * velocity;
-		const float radius = 10.0f;
-		position.y = sin(glfwGetTime()) * radius;
-	}
-
-	if (keys[GLFW_KEY_X])
-	{
-		float radius = 10.0f;
-		position.z = cos(glfwGetTime()) * radius;;
-	}
-	
+// X
+void Camera::rotateXNegative()
+{
+	glm::quat q = glm::angleAxis(-.10f, glm::vec3(1, 0, 0));
+	position = q * position;
 }
 
 glm::mat4 Camera::calculateViewMatrix()
 {
-	return glm::lookAt(position, glm::vec3(0.0, 0.0, 0.0), up);
+	// glm::vec3(move_on_x, move_on_y, move_on_z), // Camera is at (4,3,3), in World Space
+	// glm::vec3(50.0f, 50.0f, 50.0f),			   // and looks at the origin
+	// glm::vec3(0, 1, 0)
+	return glm::lookAt(position, glm::vec3(50.0f, 50.0f, 50.0f), worldUp);
 }
-
-void Camera::update()
-{
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front = glm::normalize(front);
-
-	right = glm::normalize(glm::cross(front, worldUp));
-	up = glm::normalize(glm::cross(right, front));
-}
-
-Camera::~Camera(){}
