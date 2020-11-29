@@ -85,8 +85,6 @@ GLFWwindow* InitWindow()
 	 * 	OGL options: z-buffer and blend dont work well togeather
 	 *  be careful when rendering objects.
 	 */
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -156,7 +154,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_T && action == GLFW_PRESS)
 	{
-		target.front()->switchTexture();
+		m_SPH.switchTexture();
 	}
 	else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
@@ -313,7 +311,6 @@ void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
 {
 	SPH_sphere.bindVAO();
 	shaderProgram.setUniform1f("transparency", 1.0f);
-
 	// TODO: built this if into a function?
 	if (SPH_sphere.enableTexture)
 	{
@@ -342,4 +339,5 @@ void drawSceneCube(Object& SC_cube, ShaderProgram& shaderProgram)
 	shaderProgram.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(SC_cube.modelMatrix));
 	glDrawArrays(GL_TRIANGLES, 0, SC_cube.m_vertices.size());
 	SC_cube.unbindVAO();
+
 }
