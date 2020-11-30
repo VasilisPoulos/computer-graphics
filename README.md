@@ -179,6 +179,57 @@ E: zoom in
 X: zoom out
 Πηγή: http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/#qua
 
-## Ερώτημα 5
-<!-- ΣΥΜΠΛΗΡΩΣΗ -->
+## Ερώτημα 5  
+
+Γιά την φόρτωση των κατάλληλων δεδομένων του texture ακολουθήσαμε το tutorial του 
+[learnopengl.com](https://learnopengl.com/Getting-started/Textures) το οποίο προτέινει την χρήση
+του header `stb_image.h`. Συμπεριλάβαμε την μέθοδο `loadTexture()` η οποία χρησιμοποιέι την `stbi_load` 
+και φορτώνει τα δεδομένα της εικόνας στην openGl ωστε να χρησιμοποιηθούν ως texture. Η μέθοδος
+αυτή καλέιται στο `main.cpp` κατα την αρχικοποίηση των παραμέτρων της σφαίρας στην μέθοδο `initSPΗ`. 
+
+H πληκτρολόγηση του πλήκτρου 'T' εντοπίζεται απο το events της openGL όπως ορίστικε στη 
+`glfwSetKeyCallback` στην μέθοδο `InitWindow`.Η μέθοδος `key_callback` καλεί την `switchTexture()`
+στο αντικείμενο `Object SPH_sphere` ώστε να δηλωθεί οτι θέλουμε να ενεργοποιήσουμε το texture της.  
+
+```c++
+void Object::switchTexture()
+{
+    enableTexture = !enableTexture;
+    std::cout << "$Obj :: EnableTexture set to: " << enableTexture << "\n";
+}
+```
+
+Στην συνέχεια χρησιμοποιήσαμε το `uniform transparency`, με τον τρόπο που εξηγήθηκε παραπάνω, και τελικά 
+ενεργοποιούμε το shader που φορτώσαμε στην SPH sphere οταν η μεταβλητή `enableTexture` είναι true
+διαφορετικά το texture απενεργοποιείται και ενεργοποιείται το χρώμα της σφάιρας.  
+
+```c++
+void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
+{
+	SPH_sphere.bindVAO();
+	shaderProgram.setUniform1f("transparency", 1.0f);
+	// TODO: built this if into a function?
+	if (SPH_sphere.enableTexture)
+	{
+		shaderProgram.setUniform4f("textureFlag", 1.0f, 1.0f, 1.0f, 1.0f);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, SPH_sphere.texture);
+	}
+	else {
+		shaderProgram.setUniform4f("textureFlag", 0.0f, 0.0f, 0.0f, 0.0f);
+		shaderProgram.setUniform3f("set_color", SPH_sphere.color[0], SPH_sphere.color[1], SPH_sphere.color[2];
+	}
+
+	SPH_sphere.moveObject(sphereControl);
+	shaderProgram.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(SPH_sphere.modelMatrix));
+	glDrawArrays(GL_TRIANGLES, 0, SPH_sphere.m_vertices.size());
+	glBindTexture(GL_TEXTURE_2D, 0);
+	SPH_sphere.unbindVAO();
+}
+```
+
+Μπορείτε και εσείς να χρησιμοποιήσετε τα textures που δοκιμάσαμε δίνωτας η δικά σας ορίζωντας 
+το σωστο path στην `loadTexture(PATH)` στην `initSPH`. Τα textures μας βρίσκονται στον φάκελο
+`\res\textures`.  
+
 
