@@ -229,7 +229,7 @@ void drawSPH(Object& SPH_sphere, ShaderProgram& shaderProgram)
 }
 ```
 
-Μπορείτε και εσείς να χρησιμοποιήσετε τα textures που δοκιμάσαμε δίνωτας η δικά σας ορίζωντας 
+Μπορείτε και εσείς να χρησιμοποιήσετε τα textures που δοκιμάσαμε ή δικά σας, ορίζωντας 
 το σωστο path στην `loadTexture(PATH)` στην `initSPH`. Τα textures μας βρίσκονται στον φάκελο
 `\res\textures`.  
 
