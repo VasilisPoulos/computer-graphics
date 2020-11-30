@@ -46,7 +46,7 @@ void initMembers() {
 void initCamera() {
 	glm::vec3 start_position(50.0f, 50.0f, 250.0f);
 	glm::vec3 start_up(0.0f, 1.0f, 0.0f);
-	Camera camera(start_position, start_up, 0.1f);
+	Camera camera(start_position, start_up);
 
 	m_camera = camera;
 }
@@ -192,21 +192,21 @@ void controlCamera(GLFWwindow* window, int key, int scancode, int action, int mo
 
 	else if (key == GLFW_KEY_A && action == GLFW_PRESS)
 	{
-		m_camera.rotateYPositive();
+		m_camera.rotateYNegative();
 	}
 	else if (key == GLFW_KEY_D && action == GLFW_PRESS)
 	{
-		m_camera.rotateYNegative();
+		m_camera.rotateYPositive();
 	}
 
 	else if (key == GLFW_KEY_W && action == GLFW_PRESS)
 	{
-		m_camera.rotateXPositive();
+		m_camera.rotateXNegative();
 	}
 
 	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
 	{
-		m_camera.rotateXNegative();
+		m_camera.rotateXPositive();
 	}
 
 }

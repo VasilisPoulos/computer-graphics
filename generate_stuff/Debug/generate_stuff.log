@@ -1,10 +1,11 @@
 ﻿  main.cpp
 E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\Application.h(22,23): warning C4305: 'initializing': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(140,14): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(167,27): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(171,27): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(219,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(228,34): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(229,34): warning C4305: 'argument': truncation from 'double' to 'float'
-E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(230,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(142,14): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(170,28): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(175,28): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(224,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(232,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(233,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(234,34): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\src\main.cpp(238,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   generate_stuff.vcxproj -> E:\Programming\Projects\Cpp_Projects\OpenGLv4\computer-graphics\generate_stuff\Debug\generate_stuff.exe

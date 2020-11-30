@@ -13,7 +13,7 @@ class Camera
 {
 public:
 	Camera();
-	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startMoveSpeed);
+	Camera(glm::vec3 startPosition, glm::vec3 startUp);
 
 	void zoomIn(GLfloat deltaTime);
 	void zoomOut(GLfloat deltaTime);

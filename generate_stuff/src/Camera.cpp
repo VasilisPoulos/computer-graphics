@@ -4,11 +4,10 @@
 
 Camera::Camera() {}
 
-Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startMoveSpeed)
+Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp)
 {
 	position = startPosition;
 	worldUp = startUp;
-	moveSpeed = startMoveSpeed;
 }
 
 // W
