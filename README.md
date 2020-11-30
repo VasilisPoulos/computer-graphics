@@ -120,10 +120,115 @@ Shader Abstraction in OpenGL από το κανάλι The Cherno
 
 
 ## Ερώτημα 1
-<!-- ΣΥΜΠΛΗΡΩΣΗ -->
+
 
 ## Ερώτημα 2
-<!-- ΣΥΜΠΛΗΡΩΣΗ -->
+
+H πληκτρολόγηση του πλήκτρου `Space` εντοπίζεται απο το events της openGL όπως ορίστικε στη 
+`glfwSetKeyCallback` στην μέθοδο `InitWindow`. Η μέθοδος `key_callback` καλεί την `genObject` 
+η οποία διαχειρίζεται τα στοιχειώδη αντικείμενα ή όπως τα ονομάσαμε _spawnables_. Ο τύπος, 
+το χρώμα, η αρχική κατεύθυνση και το μέγεθος των σωματιδίων καθορίζεται τυχάια (pseudorandom) 
+με την χρήση της `rand()`. 
+```c++
+void genObject() {
+	srand(time(NULL));
+
+	int randomType = rand() % 3 + 1;
+	Object spawnable(randomType);
+	
+	spawnable.randomRGB(0);
+
+	float speed = 0.04f;
+	float v_x = randomFloat(0.1, 0.9) * speed;
+	float v_y = randomFloat(0.1, 0.9) * speed;
+	float v_z = randomFloat(0.1, 0.9) * speed;
+	glm::vec3 direction_v = glm::vec3(v_x, v_y, v_z);
+	spawnable.initialDirection = direction_v;
+
+	int size = randomFloat(1, 10); // considering scale is applied in a size 2 object
+									  // eg. a .obj cube has a side of 2
+								      // so a min 
+
+	spawnable.modelMatrix = glm::translate(spawnable.modelMatrix, 
+                          glm::vec3(0.0f + size, 0.0f + size, 0.0f + size));
+	spawnable.modelMatrix = glm::scale(spawnable.modelMatrix, glm::vec3(size/2, size/2, size/2));
+	spawnObjects.push_back(spawnable);
+
+	// Debbug output
+	std::cout << "$Main :: Generating object of type " << randomType << 
+		" VAO ID -> " << spawnable.getVertexArrayID() << 
+		" size d = " << size<<"\n";
+	std::cout << "$Main :: Object type " << randomType << " ID: " << 
+		spawnable.getVertexArrayID() << " speed is (" <<
+		v_x << ", " << v_y << ", " << v_z << ")\n";
+}
+
+```    
+Συγκεκριμένα για τον τύπο του σωματιδίου, πρώτα παράγουμε εναν 
+τυχαίο ακέραιο στο διάστημα [1,3] και στην συνέχεια τον χρησιμοποιούμε σαν όρισμα στον constructor 
+της κλάσης Object η οποία με την σειρά της παράγει το αντίστοιχο αντικέιμενο όπως αριθμήσαμε στις
+σταθερές `TYPE_*`.  
+Για το χρώμα χρησιμοποιέιται η μέθδος `randomRGB`, η οποία παράγει 3 αριθμους απο το 0 μέχρι το 
+255 και στην συνέχεια τους προσαρμώζει σε float στο διάστημα [0,1] διαιρώντας με το 255. Η παράμετρος 
+brightness δεν χρησιμοποιείται στα σωματίδια.  
+```c++
+void Object::randomRGB(int brightness)
+{
+    srand(time(NULL));
+    float r = (rand() % 255 + brightness) / 255.0f;
+    float g = (rand() % 255 + brightness) / 255.0f;
+    float b = (rand() % 255 + brightness) / 255.0f;
+    std::cout << "$Obj :: RGB value set to: " << r << " " << g << " " << b << "\n";
+    color = glm::vec3(r, g, b);
+}
+```  
+Με αντίστοιχο τρόπο η αρχική κατέυθηνση ορίζεται στο διάστημα [0.1,0.9] και το μέγεθος d στο [1,10]
+χρησιμοποιώντας την μέθοδο `randomFloat`, στην δεύτερη περίπτωση γίνεται μετατροπή σε ακέραιο. Εδώ 
+προσέχουμε ώστε τα αντικείμενα να εμφανίζονται στο <0, 0, 0> αλλα να μήν βγαίνουν έξω απο τα όρια του 
+κύβου SC, για αυτόν τον λόγο λαμβάνεται υπ όψη το d και γίνεται ο κατάλληλος μετασχηματισμός. Επίσης
+θέλοντας να προσαρμώσουμε τις αρχικές διαστασεις των .obj αρχειων που φορτωσαμε για κάθε αντικέιμενο 
+(d = 2) διαιρούμε τον τυχαίο αριθμό size δια 2.  
+
+Η αναπήδηση πάνω στην επιφάνεια του κύβου ανιχέυεται στο `main.cpp` στην μέθοδο `drawScene` 
+χρησιμοποιώντας την μέθοδο της κλάσης Object `detectCollision`.
+
+```c++
+void Object::detectCollision(glm::mat4 shpereMatrix)
+{
+
+    glm::vec4 landingPosition = modelMatrix * glm::vec4(initialDirection, 1.0f);
+    glm::vec4 scaleVec = modelMatrix * glm::mat4(1.0f) * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+    int scale = scaleVec.x;
+    glm::vec4 shperePosition = shpereMatrix * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+    if (landingPosition.y >= 100 - scale) {
+        initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
+        return;
+    }
+    else if (landingPosition.y <= 0 + scale) {
+        initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
+        return;
+    }
+    else if (landingPosition.x >= 100 - scale) {
+        initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
+        return;
+    }
+    else if (landingPosition.x <= 0 + scale) {
+        initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
+        return;
+    }
+    else if (landingPosition.z >= 100 - scale) {
+        initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
+        return;
+    }
+    else if (landingPosition.z <= 0 + scale) {
+        initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
+        return;
+    }
+}
+```
+
+
 
 ## Ερώτημα 3
 Για την κίνηση της σφαίρας υπάρχουν δύο παγκόσμιες μεταβλητες στο header file Application.h, η πρώτη
@@ -179,7 +284,8 @@ A: rotate y positive
 D: rotate y negative
 E: zoom in
 X: zoom out
-Πηγή: http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/#qua
+
+[Πηγή](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/#qua)
 
 ## Ερώτημα 5  
 
