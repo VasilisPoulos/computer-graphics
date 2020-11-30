@@ -238,7 +238,8 @@ void genObject() {
 	int size = randomFloat(1, 10); // considering scale is applied in a size 2 object
 									  // eg. a .obj cube has a side of 2
 								      // so a min 
-	spawnable.modelMatrix = glm::translate(spawnable.modelMatrix, glm::vec3(0.0f, 0.0f, 0.0f));
+
+	spawnable.modelMatrix = glm::translate(spawnable.modelMatrix, glm::vec3(0.0f + size, 0.0f + size, 0.0f + size));
 	spawnable.modelMatrix = glm::scale(spawnable.modelMatrix, glm::vec3(size/2, size/2, size/2));
 	
 	spawnObjects.push_back(spawnable);

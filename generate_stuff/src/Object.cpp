@@ -254,29 +254,28 @@ void Object::detectCollision(glm::mat4 shpereMatrix)
     glm::vec4 scaleVec = modelMatrix * glm::mat4(1.0f) * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
     int scale = scaleVec.x;
     glm::vec4 shperePosition = shpereMatrix * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    //std::cout << scale << "\n";
 
-    if (landingPosition.y >= 100) {
+    if (landingPosition.y >= 100 - scale) {
         initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
         return;
     }
-    else if (landingPosition.y <= 0) {
+    else if (landingPosition.y <= 0 + scale) {
         initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);
         return;
     }
-    else if (landingPosition.x >= 100) {
+    else if (landingPosition.x >= 100 - scale) {
         initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
         return;
     }
-    else if (landingPosition.x <= 0) {
+    else if (landingPosition.x <= 0 + scale) {
         initialDirection = glm::vec3(-initialDirection.x, initialDirection.y, initialDirection.z);
         return;
     }
-    else if (landingPosition.z >= 100) {
+    else if (landingPosition.z >= 100 - scale) {
         initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
         return;
     }
-    else if (landingPosition.z <= 0) {
+    else if (landingPosition.z <= 0 + scale) {
         initialDirection = glm::vec3(initialDirection.x, initialDirection.y, -initialDirection.z);
         return;
     }
