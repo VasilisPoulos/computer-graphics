@@ -4,6 +4,8 @@
 #pragma warning(disable : 4996)
 #include <stdio.h> 
 #include <string.h> 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/ext.hpp"
 
 Object::Object(){}
 
@@ -249,8 +251,10 @@ void Object::detectCollision(glm::mat4 shpereMatrix)
 {
 
     glm::vec4 landingPosition = modelMatrix * glm::vec4(initialDirection, 1.0f);
+    glm::vec4 scaleVec = modelMatrix * glm::mat4(1.0f) * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+    int scale = scaleVec.x;
     glm::vec4 shperePosition = shpereMatrix * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
+    //std::cout << scale << "\n";
 
     if (landingPosition.y >= 100) {
         initialDirection = glm::vec3(initialDirection.x, -initialDirection.y, initialDirection.z);

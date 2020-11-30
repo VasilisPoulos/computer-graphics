@@ -45,7 +45,7 @@ void initMembers() {
 
 void initCamera() {
 	glm::vec3 start_position(50.0f, 50.0f, 250.0f);
-	glm::vec3 start_up(0.0f, -1.0f, 0.0f);
+	glm::vec3 start_up(0.0f, 1.0f, 0.0f);
 	Camera camera(start_position, start_up, 0.1f);
 
 	m_camera = camera;
@@ -235,15 +235,18 @@ void genObject() {
 	glm::vec3 direction_v = glm::vec3(v_x, v_y, v_z);
 	spawnable.initialDirection = direction_v;
 
-	float size = randomFloat(1, 5);
-
-	spawnable.modelMatrix = glm::scale(spawnable.modelMatrix, glm::vec3(size, size, size));
+	int size = randomFloat(1, 10); // considering scale is applied in a size 2 object
+									  // eg. a .obj cube has a side of 2
+								      // so a min 
+	spawnable.modelMatrix = glm::translate(spawnable.modelMatrix, glm::vec3(0.0f, 0.0f, 0.0f));
+	spawnable.modelMatrix = glm::scale(spawnable.modelMatrix, glm::vec3(size/2, size/2, size/2));
 	
 	spawnObjects.push_back(spawnable);
 
 	// Debbug output
 	std::cout << "$Main :: Generating object of type " << randomType << 
-		" VAO ID -> " << spawnable.getVertexArrayID() << "\n";
+		" VAO ID -> " << spawnable.getVertexArrayID() << 
+		" size d = " << size<<"\n";
 	std::cout << "$Main :: Object type " << randomType << " ID: " << 
 		spawnable.getVertexArrayID() << " speed is (" <<
 		v_x << ", " << v_y << ", " << v_z << ")\n";
