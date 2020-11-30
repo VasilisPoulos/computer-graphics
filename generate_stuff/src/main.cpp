@@ -166,11 +166,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_COMMA && action == GLFW_PRESS)
 	{
-		accelerateSpawnables(0.9);
+		if (spawnObjects.size() != 0)
+			accelerateSpawnables(0.9);
 	}
 	else if (key == GLFW_KEY_PERIOD && action == GLFW_PRESS)
 	{
-		accelerateSpawnables(1.1);
+		if (spawnObjects.size() != 0)
+			accelerateSpawnables(1.1);
 	}
 	controlSphere(window, key, scancode, action, mods);
 	controlCamera(window, key, scancode, action, mods);
