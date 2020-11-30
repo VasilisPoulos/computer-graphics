@@ -30,7 +30,7 @@ void initMembers() {
 	ShaderProgram shader("./res/shaders/Final.shader");
 	m_shader = shader;
 
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 100.0f, 300.0f);
+	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 4.0f, 100.0f, 500.0f);
 	m_shader.setUniform4fv("proj_matrix", 1, GL_FALSE, glm::value_ptr(Projection));
 
 
@@ -226,7 +226,7 @@ void genObject() {
 	
 	spawnable.randomRGB(0);
 
-	float speed = 0.09f;
+	float speed = 0.04f;
 	float v_x = randomFloat(0.1, 0.9) * speed;
 	float v_y = randomFloat(0.1, 0.9) * speed;
 	float v_z = randomFloat(0.1, 0.9) * speed;
