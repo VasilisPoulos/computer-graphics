@@ -152,6 +152,39 @@ Shader Abstraction in OpenGL από το κανάλι The Cherno
 
 
 ## Ερώτημα 1
+Αφού δημιουργήσουμε το βασικό παράθυρο `600x600`  στην μέθοδο `drawSceneCube` χρησιμοποιούμε τα .οbj δεδομένα του κύβου που φορτώσαμε 
+και λαμβάνωντας υπ'οψη τις αρχικές τους διαστάσεις μετασχηματίζουμε τον 
+κυβο ώστε να  είναι παράλληλος στους άξονες και εκτείνεται από το (0,0,0) μέχρι το (100, 100, 100) στο
+σύστημα παγκόσμιων συντεταγμένων. 
+```c++
+void drawSceneCube(Object& SC_cube, ShaderProgram& shaderProgram)
+{
+	shaderProgram.setUniform4f("textureFlag", 0.0f, 0.0f, 0.0f, 0.0f);
+	shaderProgram.setUniform3f("set_color", SC_cube.color[0], SC_cube.color[1], SC_cube.color[2]);
+	shaderProgram.setUniform1f("transparency", 0.1f);
+	SC_cube.bindVAO();
+	shaderProgram.setUniform4fv("model_matrix", 1, GL_FALSE, glm::value_ptr(SC_cube.modelMatrix));
+	glDrawArrays(GL_TRIANGLES, 0, SC_cube.m_vertices.size());
+	SC_cube.unbindVAO();
+
+}
+```
+Η διαφάνεια ορίζεται απο το `uniform transparency` το οποίο θέτουμε στο 0.1. 
+Στο `InitWindow` ενεργοποιούμε τις δυνατότητες αναγνωρισης βάθους και διαφάνειας τις openGl 
+ώστε να φαίνεται σωστα να έχουμε τον σωστό τιτλο και να έχουμε την δυνατότητα καταγραφής των 
+πλήκτρων.
+
+```c++
+	glfwSetWindowTitle(window, u8"Συγκρουόμενα");
+	>>>>....>>>>
+  
+  glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	glfwSetKeyCallback(window, key_callback);
+```
 
 
 ## Ερώτημα 2
